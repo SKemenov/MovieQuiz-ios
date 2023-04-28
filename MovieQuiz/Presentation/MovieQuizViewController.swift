@@ -4,6 +4,9 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainLabel.font = UIFont(name: "YPDisplay-Medium", size: 12) // font name without spaces
+        
     }
 }
 
