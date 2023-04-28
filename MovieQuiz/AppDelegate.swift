@@ -7,6 +7,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         print("Hello World for branch to merge!")
+        sleep(5)
         return true
     }
 
