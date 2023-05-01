@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIColor {
-//    use these syntax to add more custom color's names into UIColor, likes UIColor.ypBlack
+//    use this syntax to add more custom color's names into UIColor, likes UIColor.ypBlack
     static var ypBlack: UIColor { UIColor(named: "YP Black") ?? UIColor.black }
     static var ypGray: UIColor { UIColor(named: "YP Gray") ?? UIColor.gray }
     static var ypGreen: UIColor { UIColor(named: "YP Green") ?? UIColor.green }

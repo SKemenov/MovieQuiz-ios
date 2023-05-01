@@ -7,7 +7,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         print("Hello World for branch to merge!")
-        sleep(5) // <- Have to remove it before the final Pull Reequest (PR)
+//        sleep(5) // <- Have to remove it before the final Pull Reequest (PR)
         return true
     }
 
