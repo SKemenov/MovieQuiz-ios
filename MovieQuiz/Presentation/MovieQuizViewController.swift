@@ -32,6 +32,12 @@ class MovieQuizViewController: UIViewController {
         let questionNumber: String
     }
     
+    struct QuizResultsViewModel {
+        let title: String
+        let text: String
+        let buttonText: String
+    }
+    
     //  MARK: - Variables, Constants
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -126,6 +132,10 @@ class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
     }
     
+    private func show(quiz result: QuizResultsViewModel) {
+        
+    }
+    
     // Method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
         // show the result
@@ -133,7 +143,45 @@ class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = ( isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
+        correctAnswers += ( isCorrect ? 1 : 0 )
+// wait 1 sec and show the next question
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) {
+            self.showNextQuestionOrResults()
+        }
+    }
+    
+    
+    // Method
+    private func showNextQuestionOrResults() {
+        if currentQuestionIndex == questions.count - 1 {
+            // finish
+            let alert = UIAlertController(
+                title: "Этот раунд окончен!",
+                message: "Ваш результат \(correctAnswers)/\(questions.count - 1)",
+                preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Сыграть ещё раз", style: .default) { _ in
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                let firstQuestion = self.questions[self.currentQuestionIndex]
+                let viewModel = self.convert(model: firstQuestion)
+                self.show(quiz: viewModel)
+           }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            currentQuestionIndex += 1
+            // next question
+            let nextQuestion = questions[currentQuestionIndex]
+            let viewModel = convert(model: nextQuestion)
+            show(quiz: viewModel)
+            print(correctAnswers)
 
+        }
+        imageView.layer.borderWidth = 0
     }
 }
 
