@@ -33,6 +33,7 @@ class MovieQuizViewController: UIViewController {
     //  MARK: - Variables, Constants
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    private var currentQuestion = questions[currentQuestionIndex]
     
     // MARK: - Mock Data
     //    an array for the questions
@@ -98,18 +99,22 @@ class MovieQuizViewController: UIViewController {
     // MARK: - Actions
     //    Action for the Yes button
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if currentQuestionIndex < questions.count - 1 {
-            currentQuestionIndex += 1
-            updateUI()
-        }
+        
+       showAnswerResult(currentQuestion.correctAnswer ? true : false)   
+ //       if currentQuestionIndex < questions.count - 1 {
+ //           currentQuestionIndex += 1
+ //           updateUI()
+ //       }
     }
     
-    //    Action for the Yes button
+    //    Action for the No button
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if currentQuestionIndex > 0 {
-            currentQuestionIndex -= 1
-            updateUI()
-        }
+       showAnswerResult(!currentQuestion.correctAnswer ? true : false)   
+        
+//        if currentQuestionIndex > 0 {
+//            currentQuestionIndex -= 1
+//            updateUI()
+//        }
     }
     
     // MARK: - Methods
@@ -132,12 +137,32 @@ class MovieQuizViewController: UIViewController {
     //    method to update dataModel, viewModel and UI to show up the new question
     private func updateUI() {
         //        data for the default view
-        let currentQuestion = questions[currentQuestionIndex]
+        // let currentQuestion = questions[currentQuestionIndex] // need to check and after that delete
         let currentQuiz = convert(model: currentQuestion)
         show(quiz: currentQuiz)
+        // enable buttons
+        yesButtonClicked.enabled
+        noButtonClicked.enabled
+
     }
     
-    
+    // Method to show the answer result
+    private func showAnswerResult(isCorrect: Bool) {
+        // disable buttons to show the 
+        yesButtonClicked.disabled
+        noButtonClicked.disabled
+        // show the result
+        print(isCorrect ? "Yes, it's \(isCorrect)" : "No, it isn't \(isCorrect)")
+        // timer for 3 secs
+       sleep(3)
+        // run next question - need to extract into the method
+        if currentQuestionIndex < questions.count - 1 {
+            currentQuestionIndex += 1
+            updateUI()
+        } else {
+        print("Game is over")
+        }
+    }
 }
 
 /*
