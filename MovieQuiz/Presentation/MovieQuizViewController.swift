@@ -3,7 +3,8 @@ import UIKit
 final
 class MovieQuizViewController: UIViewController {
     //     MARK: - Outlets
-    //    Outlets
+    //
+    //
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -12,7 +13,9 @@ class MovieQuizViewController: UIViewController {
     
     
     // MARK: - Structs
-    //        Struct to hold all information about the question
+    //
+    //
+    //        Struct to hold an information about the question
     struct QuizQuestion {
         // picture name == movie name
         let name: String
@@ -21,8 +24,9 @@ class MovieQuizViewController: UIViewController {
         // rightAnswer
         let correctAnswer: Bool
     }
+
     
-    //    Struct to hold information for the questionShowed of the state machine
+    //    Struct to hold an information for the 'questionShowed' state of the state machine
     struct QuizStepViewModel {
         // picture
         let image: UIImage
@@ -32,17 +36,27 @@ class MovieQuizViewController: UIViewController {
         let questionNumber: String
     }
     
+    
+    // Struct to colleect information for the
     struct QuizResultsViewModel {
+        // alert's title
         let title: String
+        // alert's message
         let text: String
+        // alert button's label
         let buttonText: String
     }
     
+    
     //  MARK: - Variables, Constants
+    //
+    //
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
     // MARK: - Mock Data
+    //
+    //
     //    an array for the questions
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -84,30 +98,35 @@ class MovieQuizViewController: UIViewController {
         QuizQuestion(
             name: "Vivarium",
             text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            name: "Crazy",
-            text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
+        // Fake movie to check loading empty UIImage()
+        //        ,
+        //        QuizQuestion(
+        //            name: "Crazy",
+        //            text: "Рейтинг этого фильма больше чем 6?",
+        //            correctAnswer: false)
     ]
     
     
     // MARK: - Lifecycle
-    
+    //
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         let currentQuestion = questions[currentQuestionIndex]
-        let currentQuiz = convert(model: currentQuestion)
-        show(quiz: currentQuiz)
-
+        let questionViewModel = convert(model: currentQuestion)
+        show(quiz: questionViewModel)
     }
     
     
     // MARK: - Actions
+    //
+    //
     //    Action for the Yes button
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer ? true : false)
     }
+    
     
     //    Action for the No button
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -115,7 +134,8 @@ class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - Methods
-    
+    //
+    //
     // Method to convert QuizQuestion struct data into QuizStepViewModel's view model
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // return image by the name or empty image as UIImage()
@@ -125,62 +145,93 @@ class MovieQuizViewController: UIViewController {
             questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
     
-    // Method to put data from the viewModel into UI elements
+    
+    // Method to put data from the question viewModel into UI elements
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
     }
     
+    
+    // Method to show quiz's result into resultsViewModel
     private func show(quiz result: QuizResultsViewModel) {
         
+        // Let's start with constants for the alert and the action
+        let alert = UIAlertController(
+            title: result.title,
+            message: result.text,
+            preferredStyle: .alert)
+        
+        // prepare the action (a button) and to-do steps for the afterparty
+        let action = UIAlertAction(
+            title: result.buttonText,
+            style: .default) { _ in // <- here starting the closure - what exactly need to do after clicking the alert button
+                
+                // reset Index's and Score's global variables
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                
+                // load the first question and show it
+                let firstQuestion = self.questions[self.currentQuestionIndex]
+                let questionViewModel = self.convert(model: firstQuestion)
+                self.show(quiz: questionViewModel)
+            }
+        
+        // combine the alert and the action
+        alert.addAction(action)
+        
+        // show the final scene - the alert with the action
+        self.present(alert, animated: true, completion: nil)
     }
+    
     
     // Method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
-        // show the result
+        
+        // allow to show a Border, 8px wide, with corners' radius 20px, and Green (if win) of Red (if lose)
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = ( isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
+        
+        // Update the Score variable. If the answer is correct add 1, otherwise, nothing
         correctAnswers += ( isCorrect ? 1 : 0 )
-// wait 1 sec and show the next question
+        
+        // wait 1 sec and go next to show the next question
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) {
             self.showNextQuestionOrResults()
         }
     }
     
     
-    // Method
+    // Method which showing the next question or the result alert at the end
     private func showNextQuestionOrResults() {
+        // if it not the end go the next question, otherwise - show the final scene
         if currentQuestionIndex == questions.count - 1 {
-            // finish
-            let alert = UIAlertController(
+            
+            // Let's start with constants for the alert's title, message and the button's label
+            let resultsViewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                message: "Ваш результат \(correctAnswers)/\(questions.count - 1)",
-                preferredStyle: .alert)
+                text: "Ваш результат \(correctAnswers)/\(questions.count)",
+                buttonText: "Сыграть ещё раз")
             
-            let action = UIAlertAction(title: "Сыграть ещё раз", style: .default) { _ in
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                let firstQuestion = self.questions[self.currentQuestionIndex]
-                let viewModel = self.convert(model: firstQuestion)
-                self.show(quiz: viewModel)
-           }
-            
-            alert.addAction(action)
-            
-            self.present(alert, animated: true, completion: nil)
+            // show the final scene - The End
+            show(quiz: resultsViewModel)
             
         } else {
+            // show must go on!
             currentQuestionIndex += 1
-            // next question
+            
+            // prepare the next question and
             let nextQuestion = questions[currentQuestionIndex]
-            let viewModel = convert(model: nextQuestion)
-            show(quiz: viewModel)
-            print(correctAnswers)
-
+            let questionViewModel = convert(model: nextQuestion)
+            show(quiz: questionViewModel)
+            //            print(correctAnswers, questions.count)
+            
         }
+        
+        // hide the border around the image before showing the first (or next) question
         imageView.layer.borderWidth = 0
     }
 }
