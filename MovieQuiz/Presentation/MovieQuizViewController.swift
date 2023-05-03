@@ -8,8 +8,6 @@ class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    @IBOutlet private weak var yesButtonClicked: UIButton!
-    @IBOutlet private weak var noButtonClicked: UIButton!
     
     
     // MARK: - Structs
@@ -37,7 +35,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    // Struct to colleect information for the
+    // Struct to colleect information for the 'resultShowed' state of the state machine
     struct QuizResultsViewModel {
         // alert's title
         let title: String
@@ -113,9 +111,16 @@ class MovieQuizViewController: UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // load the first question
         let currentQuestion = questions[currentQuestionIndex]
         let questionViewModel = convert(model: currentQuestion)
         show(quiz: questionViewModel)
+        
+        // make a border for the first question the same as in the Firma protopype
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 0
+        imageView.layer.cornerRadius = 20
     }
     
     
@@ -176,6 +181,9 @@ class MovieQuizViewController: UIViewController {
                 let firstQuestion = self.questions[self.currentQuestionIndex]
                 let questionViewModel = self.convert(model: firstQuestion)
                 self.show(quiz: questionViewModel)
+                
+                // hide the border around the image after showing the first question
+                self.imageView.layer.borderWidth = 0
             }
         
         // combine the alert and the action
@@ -227,12 +235,10 @@ class MovieQuizViewController: UIViewController {
             let nextQuestion = questions[currentQuestionIndex]
             let questionViewModel = convert(model: nextQuestion)
             show(quiz: questionViewModel)
-            //            print(correctAnswers, questions.count)
             
+            // hide the border around the image before showing the next question
+            imageView.layer.borderWidth = 0
         }
-        
-        // hide the border around the image before showing the first (or next) question
-        imageView.layer.borderWidth = 0
     }
 }
 
