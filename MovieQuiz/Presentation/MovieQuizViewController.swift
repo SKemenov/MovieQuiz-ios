@@ -8,6 +8,8 @@ class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     
     
     // MARK: - Structs
@@ -203,13 +205,23 @@ class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = ( isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
         
+        // disable buttons
+        enableButtons(false)
+        
         // Update the Score variable. If the answer is correct add 1, otherwise, nothing
         correctAnswers += ( isCorrect ? 1 : 0 )
         
-        // wait 1 sec and go next to show the next question
+        // wait 1 sec after that enable buttons and go next to show the next question
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) {
+            self.enableButtons(true)
             self.showNextQuestionOrResults()
         }
+    }
+    
+    // Method do enable (or disable) Yes and No buttons
+    private func enableButtons(_ state: Bool) {
+            yesButton.isEnabled = state
+            noButton.isEnabled = state
     }
     
     
