@@ -137,7 +137,10 @@ class MovieQuizViewController: UIViewController {
         // prepare the action (a button) and to-do steps for the afterparty
         let action = UIAlertAction(
             title: result.buttonText,
-            style: .default) { _ in // <- here starting the closure - what exactly need to do after clicking the alert button
+            style: .default) { [weak self] _ in // <- here starting the closure - what exactly need to do after clicking the alert button
+                
+                // use weak in closure, so need to add guard let for weak, in this case weak self
+                guard let self = self else { return }
                 
                 // reset Index's and Score's global variables
                 self.currentQuestionIndex = 0
@@ -176,7 +179,8 @@ class MovieQuizViewController: UIViewController {
         correctAnswers += ( isCorrect ? 1 : 0 )
         
         // wait 1 sec after that enable buttons and go next to show the next question
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) { [weak self] in
+            guard let self = self else { return }
             self.enableButtons(true)
             self.showNextQuestionOrResults()
         }
