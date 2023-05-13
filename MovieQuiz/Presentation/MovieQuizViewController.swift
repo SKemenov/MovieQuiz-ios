@@ -107,7 +107,7 @@ class MovieQuizViewController: UIViewController {
     // MARK: - Methods
     //
     //
-    // Method to convert QuizQuestion struct data into QuizStepViewModel's view model
+    /// Method to convert QuizQuestion struct data into QuizStepViewModel's view model
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // return image by the name or empty image as UIImage()
         return QuizStepViewModel(
@@ -117,7 +117,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    // Method to put data from the question viewModel into UI elements
+    /// Method to put data from the question viewModel into UI elements
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
@@ -125,7 +125,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    // Method to show quiz's result into resultsViewModel
+    /// Method to show quiz's result into resultsViewModel
     private func show(quiz result: QuizResultsViewModel) {
         
         // Let's start with constants for the alert and the action
@@ -160,7 +160,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    // Method to show the answer result
+    /// Method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
         
         // allow to show a Border, 8px wide, with corners' radius 20px, and Green (if win) of Red (if lose)
@@ -182,14 +182,14 @@ class MovieQuizViewController: UIViewController {
         }
     }
     
-    // Method do enable (or disable) Yes and No buttons
+    /// Method do enable (or disable) Yes and No buttons
     private func enableButtons(_ state: Bool) {
         yesButton.isEnabled = state
         noButton.isEnabled = state
     }
     
     
-    // Method which showing the next question or the result alert at the end
+    /// Method which showing the next question or the result alert at the end
     private func showNextQuestionOrResults() {
         // if it not the end go the next question, otherwise - show the final scene
         if currentQuestionIndex == questions.count - 1 {
@@ -221,7 +221,7 @@ class MovieQuizViewController: UIViewController {
 // MARK: - Structs
 //
 //
-//        Struct to hold an information about the question
+///        Struct to hold an information about the question
 struct QuizQuestion {
     // picture name == movie name
     let name: String
@@ -232,7 +232,7 @@ struct QuizQuestion {
 }
 
 
-//    Struct to hold an information for the 'questionShowed' state of the state machine
+///    Struct to hold an information for the 'questionShowed' state of the state machine
 struct QuizStepViewModel {
     // picture
     let image: UIImage
@@ -243,7 +243,7 @@ struct QuizStepViewModel {
 }
 
 
-// Struct to colleect information for the 'resultShowed' state of the state machine
+/// Struct to colleect information for the 'resultShowed' state of the state machine
 struct QuizResultsViewModel {
     // alert's title
     let title: String
