@@ -17,7 +17,9 @@ class MovieQuizViewController: UIViewController {
     //
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
-    
+    private let questionsAmount: Int = 10
+    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var currentQuestion: QuizQuestion?
     // MARK: - Lifecycle
     //
     //
@@ -25,10 +27,11 @@ class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         
         // load the first question
-        let currentQuestion = questions[currentQuestionIndex]
-        let questionViewModel = convert(model: currentQuestion)
-        show(quiz: questionViewModel)
-        
+        if let firstQuestion = questionFactory.requestNextQuestion() {
+            currentQuestion = firstQuestion
+            let questionViewModel = convert(model: firstQuestion)
+            show(quiz: questionViewModel)
+        }
         // make a border for the first question the same as in the Firma protopype
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
@@ -41,13 +44,15 @@ class MovieQuizViewController: UIViewController {
     //
     /// An action for the Yes button
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer ? true : false)
+        guard let currentQuestion = currentQuestion else { return }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer ? true : false)
     }
     
     
     /// An action for the No button
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer ? true : false)
+        guard let currentQuestion = currentQuestion else { return }
+        showAnswerResult(isCorrect: !currentQuestion.correctAnswer ? true : false)
     }
     
     // MARK: - Methods
@@ -59,7 +64,7 @@ class MovieQuizViewController: UIViewController {
         return QuizStepViewModel(
             image: UIImage(named: model.name) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     
@@ -93,10 +98,11 @@ class MovieQuizViewController: UIViewController {
                 self.correctAnswers = 0
                 
                 // load the first question and show it
-                let firstQuestion = self.questions[self.currentQuestionIndex]
-                let questionViewModel = self.convert(model: firstQuestion)
-                self.show(quiz: questionViewModel)
-                
+                if let firstQuestion = self.questionFactory.requestNextQuestion() {
+                    self.currentQuestion = firstQuestion
+                    let viewModel = self.convert(model: firstQuestion)
+                    self.show(quiz: viewModel)
+                }
                 // hide the border around the image after showing the first question
                 self.imageView.layer.borderWidth = 0
             }
@@ -142,12 +148,12 @@ class MovieQuizViewController: UIViewController {
     /// A private method which showing the next question or the result alert at the end
     private func showNextQuestionOrResults() {
         // if it not the end go the next question, otherwise - show the final scene
-        if currentQuestionIndex == questions.count - 1 {
+        if currentQuestionIndex == questionsAmount - 1 {
             
             // Let's start with constants for the alert's title, message and the button's label
             let resultsViewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text: "Ваш результат \(correctAnswers)/\(questions.count)",
+                text: "Ваш результат \(correctAnswers)/\(questionsAmount)",
                 buttonText: "Сыграть ещё раз")
             
             // show the final scene - The End
@@ -158,10 +164,11 @@ class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             
             // prepare the next question and
-            let nextQuestion = questions[currentQuestionIndex]
-            let questionViewModel = convert(model: nextQuestion)
-            show(quiz: questionViewModel)
-            
+            if let nextQuestion = questionFactory.requestNextQuestion() {
+                currentQuestion = nextQuestion
+                let questionViewModel = convert(model: nextQuestion)
+                show(quiz: questionViewModel)
+            }
             // hide the border around the image before showing the next question
             imageView.layer.borderWidth = 0
         }
