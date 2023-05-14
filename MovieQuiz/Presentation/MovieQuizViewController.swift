@@ -168,40 +168,7 @@ class MovieQuizViewController: UIViewController {
     }
 }
 
-// MARK: - Structs
-//
-//
-///        Struct to hold an information about the question
-struct QuizQuestion {
-    // picture name == movie name
-    let name: String
-    // question
-    let text: String
-    // rightAnswer
-    let correctAnswer: Bool
-}
 
-
-///    Struct to hold an information for the 'questionShowed' state of the state machine
-struct QuizStepViewModel {
-    // picture
-    let image: UIImage
-    // question
-    let question: String
-    // question number of all (ex. "2/10")
-    let questionNumber: String
-}
-
-
-/// Struct to colleect information for the 'resultShowed' state of the state machine
-struct QuizResultsViewModel {
-    // alert's title
-    let title: String
-    // alert's message
-    let text: String
-    // alert button's label
-    let buttonText: String
-}
 
 /*
  Mock-данные

@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Class `QuestionFactory` generate, load, store all informations about questions
+/// The `QuestionFactory` class is a Model to generate, load, store all informations about questions
 class QuestionFactory {
     // MARK: - Constants & Variables
     //
