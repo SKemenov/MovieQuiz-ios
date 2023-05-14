@@ -39,13 +39,13 @@ class MovieQuizViewController: UIViewController {
     // MARK: - Actions
     //
     //
-    //    Action for the Yes button
+    /// An action for the Yes button
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer ? true : false)
     }
     
     
-    //    Action for the No button
+    /// An action for the No button
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer ? true : false)
     }
@@ -53,7 +53,7 @@ class MovieQuizViewController: UIViewController {
     // MARK: - Methods
     //
     //
-    /// Method to convert QuizQuestion struct data into QuizStepViewModel's view model
+    /// A private method to convert QuizQuestion struct data into QuizStepViewModel's view model
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // return image by the name or empty image as UIImage()
         return QuizStepViewModel(
@@ -63,7 +63,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    /// Method to put data from the question viewModel into UI elements
+    /// A private method  to put data from the question viewModel into UI elements
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
@@ -71,7 +71,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    /// Method to show quiz's result into resultsViewModel
+    /// A private method  to show quiz's result into resultsViewModel
     private func show(quiz result: QuizResultsViewModel) {
         
         // Let's start with constants for the alert and the action
@@ -109,7 +109,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    /// Method to show the answer result
+    /// A private method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
         
         // allow to show a Border, 8px wide, with corners' radius 20px, and Green (if win) of Red (if lose)
@@ -132,14 +132,14 @@ class MovieQuizViewController: UIViewController {
         }
     }
     
-    /// Method do enable (or disable) Yes and No buttons
+    /// A private method to enable (or disable) Yes and No buttons
     private func enableButtons(_ state: Bool) {
         yesButton.isEnabled = state
         noButton.isEnabled = state
     }
     
     
-    /// Method which showing the next question or the result alert at the end
+    /// A private method which showing the next question or the result alert at the end
     private func showNextQuestionOrResults() {
         // if it not the end go the next question, otherwise - show the final scene
         if currentQuestionIndex == questions.count - 1 {

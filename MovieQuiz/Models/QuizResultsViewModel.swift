@@ -9,12 +9,22 @@ import Foundation
 // MARK: - Structs
 //
 //
-/// Struct to colleect information for the 'resultShowed' state of the state machine
+/// A struct to colleect information for the 'resultShowed' state of the state machine
 struct QuizResultsViewModel {
+    //  MARK: - Variables, Constants
+    //
+    //
     // alert's title
     let title: String
+    
     // alert's message
     let text: String
+    
     // alert button's label
     let buttonText: String
+    
+    // MARK: - Methods
+    //
+    //
+
 }
