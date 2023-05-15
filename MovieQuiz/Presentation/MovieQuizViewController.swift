@@ -1,6 +1,7 @@
 import UIKit
 
 final
+/// <#Description#>
 class MovieQuizViewController: UIViewController {
     //     MARK: - Outlets
     //
@@ -14,11 +15,17 @@ class MovieQuizViewController: UIViewController {
     
     //  MARK: - Variables, Constants
     //
-    //
+    ///
     private var currentQuestionIndex: Int = 0
+    /// A variable with total amound of player's correct answers
     private var correctAnswers: Int = 0
+    /// A constant with total amound of questions for each round
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    /// A constant compatible with`QuestionFactoryProtocol` to provide access to this Factory
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    /// An optional variable with data of the current question
+    /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
+    /// - returns: `QuizQuestion` strucrure or `nil`
     private var currentQuestion: QuizQuestion?
     // MARK: - Lifecycle
     //
@@ -68,7 +75,14 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    /// A private method  to put data from the question viewModel into UI elements
+    /// A private method  to perpesent data from the question viewModel into UI elements
+    ///
+    /// The method update data for the following UI elements:
+    ///  - `counterLabel`
+    ///  - `imageView`
+    ///  - `textLabel`
+    ///
+    /// - Parameter quiz: Data from the question viewModel
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
@@ -76,7 +90,7 @@ class MovieQuizViewController: UIViewController {
     }
     
     
-    /// A private method  to show quiz's result into resultsViewModel
+    /// A private method  to show an alert with quiz's result from resultsViewModel
     private func show(quiz result: QuizResultsViewModel) {
         
         // Let's start with constants for the alert and the action
@@ -90,7 +104,7 @@ class MovieQuizViewController: UIViewController {
             title: result.buttonText,
             style: .default) { [weak self] _ in // <- here starting the closure - what exactly need to do after clicking the alert button
                 
-                // use weak in closure, so need to add guard let for weak, in this case weak self
+                // use weak in closure, so need to add `guard-let` for weak link, in this case `weak` is `self`
                 guard let self = self else { return }
                 
                 // reset Index's and Score's global variables

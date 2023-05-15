@@ -7,8 +7,23 @@
 
 import Foundation
 
-/// The `QuestionFactory` class is a Model to generate, load, store all informations about questions
-class QuestionFactory {
+//  MARK: - Classes
+//
+//
+
+/// A `QuestionFactory` class is a Service (or a Factory)  to generate, load, store all information about questions.
+///
+/// This class compatible with `QuestionFactoryProtocol`
+/// 
+/// ### Properties
+/// `QuestionFactory` has the following properties: an array with mock data - `questions: [QuizQuestion]`.
+///
+/// ### Methods
+/// This class has the next private method:
+///
+/// - term **func requestNextQuestion() -> QuizQuestion?**: A method to request all necessary data for the next question.
+
+class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
     //
     //
@@ -17,7 +32,7 @@ class QuestionFactory {
     //
     //
     /// An array with all data for the questions
-    /// - Returns: a record of the QuizQuestion struct
+    /// - Returns: a record of data by the `QuizQuestion` structure
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             name: "The Godfather",
@@ -71,10 +86,10 @@ class QuestionFactory {
     //
     //
     /// A method to request all necessary data for the next question.
-    /// - Returns: an optional - `QuizQuestion` struct if it possible to request ot `nil`
+    ///
+    /// - Returns: an optional - `QuizQuestion` structure if it possible to request ot `nil`
     func requestNextQuestion() -> QuizQuestion? {
-        
-        // get an index as a random number from the range from 0 to the end of questions array
+        /// It gets an index as a random number from the range from 0 to the end of questions array
         guard let index = (0..<questions.count).randomElement() else { return nil }
         
         // try to return a record from questions array with current index or return nil
