@@ -13,6 +13,7 @@ import Foundation
 /// A protocol for all Factories that can work with `QuizQuestion` structure
 ///
 /// The protocol has `requestNextQuestion()` method
+///  - important: The method has no returns because of `QuestionFactoryDelegate`.
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion() -> QuizQuestion?
+    func requestNextQuestion()
 }

@@ -26,8 +26,9 @@ import Foundation
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
     //
-    //
-
+    /// A delegate variable using to callback from viewController
+    weak var delegate: QuestionFactoryDelegate?
+    
     // MARK: - Mock Data
     //
     //
@@ -85,6 +86,13 @@ class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Methods
     //
     //
+    /// A default init for `QuestionFactory` class with a delegate
+    ///
+    /// - Parameter delegate: A delegate to init the Factory
+    init(delegate: QuestionFactoryDelegate) {
+        self.delegate = delegate
+    }
+    
     /// A method to request all necessary data for the next question.
     ///
     /// - Returns: an optional - `QuizQuestion` structure if it possible to request ot `nil`
