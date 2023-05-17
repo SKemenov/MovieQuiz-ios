@@ -21,7 +21,8 @@ import Foundation
 /// ### Methods
 /// This class has the next private method:
 ///
-/// - term **func requestNextQuestion() -> QuizQuestion?**: A method to request all necessary data for the next question.
+/// - term **func requestNextQuestion()**: A method to request all necessary data for the next question.
+///  - version: 2.0 with delegate
 
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
@@ -93,17 +94,27 @@ class QuestionFactory: QuestionFactoryProtocol {
         self.delegate = delegate
     }
     
+
     /// A method to request all necessary data for the next question.
     ///
-    /// - Returns: an optional - `QuizQuestion` structure if it possible to request ot `nil`
-    func requestNextQuestion() -> QuizQuestion? {
-        /// It gets an index as a random number from the range from 0 to the end of questions array
-        guard let index = (0..<questions.count).randomElement() else { return nil }
+    /// After requesting the question data using the delegate's callback method to load `QuizQuestion` structure into UI
+    /// - Returns: the #2 version of the method has no returns
+    /// - version: v.2 using the delegate to update the UI
+    /// - Postcondition: used delegate's `didReceiveNextQuestion()` callback method
+    func requestNextQuestion()  {
+        /// create half-opened range -  from 0 to the end of questions array - 1
+        let range = 0..<questions.count
+        /// It gets an index as a random number from the range. If has no index, send nil into the delegate and return from the method
+        guard let index = range.randomElement() else {
+            delegate?.didReceiveNextQuestion(question: nil)
+            return
+        }
         
-        // try to return a record from questions array with current index or return nil
-        return questions[safe: index]
+        // try to receive a record from questions array with current index or return nil
+        let question = questions[safe: index]
+        /// put `QuizQuestion` structure into the delegate's callback method
+        delegate?.didReceiveNextQuestion(question: question)
     }
-    
-    
+
     
 }

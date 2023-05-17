@@ -9,9 +9,9 @@ import Foundation
 
 /// This's a delegate to control receiving questions from our Factory.
 ///
-/// To be compatible should use `didReceiveNextQuestion(question:)` method.
+/// To be compatible should implement `didReceiveNextQuestion(question:)` method.
 protocol QuestionFactoryDelegate: AnyObject {
-    /// A method to control a loading status for the question.
+    /// Request a callback method for updating UI after loading the question.
     /// - Parameter question: a question or `nil`
     func didReceiveNextQuestion(question: QuizQuestion?)
 }

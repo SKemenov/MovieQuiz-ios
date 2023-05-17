@@ -2,7 +2,7 @@ import UIKit
 
 final
 /// <#Description#>
-class MovieQuizViewController: UIViewController {
+class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //     MARK: - Outlets
     //
     //
@@ -22,7 +22,7 @@ class MovieQuizViewController: UIViewController {
     /// A constant with total amound of questions for each round
     private let questionsAmount: Int = 10
     /// A constant compatible with`QuestionFactoryProtocol` to provide access to this Factory
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     /// An optional variable with data of the current question
     /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
     /// - returns: `QuizQuestion` strucrure or `nil`
@@ -33,12 +33,12 @@ class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // load the first question
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let questionViewModel = convert(model: firstQuestion)
-            show(quiz: questionViewModel)
-        }
+        // init the factory
+        questionFactory = QuestionFactory(delegate: self)
+        
+        // try to request the first question
+        questionFactory?.requestNextQuestion()
+        
         // make a border for the first question the same as in the Firma protopype
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
@@ -65,6 +65,21 @@ class MovieQuizViewController: UIViewController {
     // MARK: - Methods
     //
     //
+    
+    /// A callback method to receive question from the delegate.
+    /// - Parameter question: `QuizQuestion` structure with the question or `nil`
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        /// while receiving `nil` return without updating UI
+        guard let question = question else { return }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        // use async to show updated UI
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+        
+    }
+    
     /// A private method to convert QuizQuestion struct data into QuizStepViewModel's view model
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // return image by the name or empty image as UIImage()
@@ -112,11 +127,8 @@ class MovieQuizViewController: UIViewController {
                 self.correctAnswers = 0
                 
                 // load the first question and show it
-                if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                    self.currentQuestion = firstQuestion
-                    let viewModel = self.convert(model: firstQuestion)
-                    self.show(quiz: viewModel)
-                }
+                self.questionFactory?.requestNextQuestion()
+                
                 // hide the border around the image after showing the first question
                 self.imageView.layer.borderWidth = 0
             }
@@ -178,11 +190,8 @@ class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             
             // prepare the next question and
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let questionViewModel = convert(model: nextQuestion)
-                show(quiz: questionViewModel)
-            }
+            questionFactory?.requestNextQuestion()
+            
             // hide the border around the image before showing the next question
             imageView.layer.borderWidth = 0
         }
