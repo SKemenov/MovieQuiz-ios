@@ -10,11 +10,12 @@ import Foundation
 //  MARK: - Protocols
 //
 //
-///// A protocol for all Factories that can work with `QuizQuestion` structure
+///// A protocol for all alerts that can work with `AlertModel` structure
 /////
-///// The protocol has `requestNextQuestion()` method
-/////  - important: The method has no returns because of `QuestionFactoryDelegate`.
-//protocol QuestionFactoryProtocol {
-//    func requestNextQuestion()
-//}
+///// The protocol has `requestAlert()` method
+/////  - important: The method has no returns because of `requestAlertDelegate`.
+protocol AlertPresenterProtocol {
+  func requestAlert()
+}
+
 
