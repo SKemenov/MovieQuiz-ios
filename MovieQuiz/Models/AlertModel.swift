@@ -8,18 +8,18 @@
 import Foundation
 
 /* Структура AlertModel должна содержать:
-текст заголовка алерта title
-текст сообщения алерта message
-текст для кнопки алерта buttonText
-замыкание без параметров для действия по кнопке алерта completion
+done - текст заголовка алерта title
+done - текст сообщения алерта message
+done - текст для кнопки алерта buttonText
+??? - замыкание без параметров для действия по кнопке алерта completion
 */
 
 // MARK: - Structs
 //
 //
-/// A structure to collect information for the 'resultShowed' state of the state machine.
+/// A structure to collect information for the 'AlertPresenter' state of the state machine.and show the final alert with game's score.
 ///
-/// The `QuizResultsViewModel` structure has the following properties:
+/// The `AlertModel` structure has the following properties:
 ///
 /// - term **title: String**: Used to represent the alert's title.
 /// *****
@@ -27,13 +27,14 @@ import Foundation
 /// *****
 /// - term **buttonText: String**: Used to represent the alert button's label.
 ///
-/// - Important: The `QuizResultsViewModel` structure has no methods.
-//struct QuizResultsViewModel {
-//    //  MARK: - Properties
-//    //
-//    //
-//    let title: String
-//    let text: String
-//    let buttonText: String
-//
-//}
+/// - Important: The `AlertModel` structure has no methods.
+struct AlertModel {
+    //  MARK: - Properties
+    //
+    //
+    let title: String
+    let text: String
+    let buttonText: String
+  
+}
+
