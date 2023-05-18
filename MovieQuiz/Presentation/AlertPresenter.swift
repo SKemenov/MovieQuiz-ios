@@ -25,7 +25,7 @@ class AlertPresenter: UIViewController, AlertPresenterProtocol {
      /// A delegate variable using to delegate from viewController
     weak var delegate: AlertPresenterDelegate?
 
-
+private var alert: AlertModel?
     // MARK: - Methods
     //
     //
@@ -53,7 +53,7 @@ class AlertPresenter: UIViewController, AlertPresenterProtocol {
         }
         
         // try to receive a record from questions array with current index or return nil
-        let alert = questions[safe: index]
+         alert = AlertModel(
         /// put `QuizQuestion` structure into the delegate's callback method
         delegate?.didReceiveAlertFor(alert: alert)
     }
