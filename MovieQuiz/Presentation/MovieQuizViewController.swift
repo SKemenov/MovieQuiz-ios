@@ -21,17 +21,28 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     /// A constant with total amound of questions for each round
     private let questionsAmount: Int = 10
-    /// A constant compatible with`QuestionFactoryProtocol` to provide access to this Factory
+    
+    /// An optional variable compatible with`QuestionFactoryProtocol` to provide access to this Factory
+    /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
     private var questionFactory: QuestionFactoryProtocol?
+
     /// An optional variable with data of the current question
     /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
-    /// - returns: `QuizQuestion` strucrure or `nil`
+    /// - returns: `QuizQuestion` structure or `nil`
     private var currentQuestion: QuizQuestion?
+
+    /// An optional variable compatible with`AlertPresenterProtocol` to provide access to `AlertPresenter` class
+    /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
+    private var alertPresenter: AlertPresenterProtocol?
+
     // MARK: - Lifecycle
     //
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // init the presenter
+        alertPresenter = AlertPresenter(delegate: self)
         
         // init the factory
         questionFactory = QuestionFactory(delegate: self)
@@ -66,7 +77,7 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //
     //
     
-    /// A callback method to receive question from the delegate.
+    /// A delegate method to receive question from the factory's delegate.
     /// - Parameter question: `QuizQuestion` structure with the question or `nil`
     func didReceiveNextQuestion(question: QuizQuestion?) {
         /// while receiving `nil` return without updating UI
@@ -77,7 +88,15 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
-        
+    }
+    
+    
+    /// A delegate method to receive alert from the presenter's delegate.
+    /// - Parameter question: `AlertModel` structure with the alert or `nil`
+    func didReceiveAlertFor(alert: AlertModel?) {
+        /// while receiving `nil` return without updating UI
+        guard let alert = alert else { return }
+       
     }
     
     /// A private method to convert QuizQuestion struct data into QuizStepViewModel's view model
