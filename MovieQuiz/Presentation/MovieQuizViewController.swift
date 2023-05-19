@@ -2,7 +2,7 @@ import UIKit
 
 final
 /// <#Description#>
-class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
     //     MARK: - Outlets
     //
     //
@@ -47,13 +47,8 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         // init the factory
         questionFactory = QuestionFactory(delegate: self)
         
-        // try to request the first question
-        questionFactory?.requestNextQuestion()
-        
-        // make a border for the first question the same as in the Firma protopype
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 0
-        imageView.layer.cornerRadius = 20
+        // try to reset round and request the first question
+        resetRound()
     }
     
     
@@ -90,12 +85,27 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+   // A method to reset the round (at the begining and before running the next round)
+    func resetRound() {
+        // make a border for the first question the same as in the Firma protopype
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 0
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderColor = nil
+        
+        // reset variables
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        
+        // try to request the first question
+        questionFactory?.requestNextQuestion()
+    }
     
     /// A delegate method to receive alert from the presenter's delegate.
     /// - Parameter question: `AlertModel` structure with the alert or `nil`
-    func didReceiveAlertFor(alert: AlertModel?) {
+    func didReceiveAlert(for model: AlertModel?) {
         /// while receiving `nil` return without updating UI
-        guard let alert = alert else { return }
+        guard let model else { return }
        
     }
     
@@ -142,14 +152,7 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else { return }
                 
                 // reset Index's and Score's global variables
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-                
-                // load the first question and show it
-                self.questionFactory?.requestNextQuestion()
-                
-                // hide the border around the image after showing the first question
-                self.imageView.layer.borderWidth = 0
+                self.resetRound()
             }
         
         // combine the alert and the action
@@ -164,9 +167,9 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showAnswerResult(isCorrect: Bool) {
         
         // allow to show a Border, 8px wide, with corners' radius 20px, and Green (if win) of Red (if lose)
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 20
+//        imageView.layer.masksToBounds = true
+//        imageView.layer.borderWidth = 8
+//        imageView.layer.cornerRadius = 20
         imageView.layer.borderColor = ( isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
         
         // disable buttons
@@ -196,13 +199,17 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             
             // Let's start with constants for the alert's title, message and the button's label
-            let resultsViewModel = QuizResultsViewModel(
+//            let resultsViewModel = QuizResultsViewModel(
+            let alertModel = AlertModel(
                 title: "Этот раунд окончен!",
                 text: "Ваш результат \(correctAnswers)/\(questionsAmount)",
-                buttonText: "Сыграть ещё раз")
+                buttonText: "Сыграть ещё раз",
+                completion: resetRound()
+            )
             
             // show the final scene - The End
-            show(quiz: resultsViewModel)
+//            show(quiz: resultsViewModel)
+        AlertPresenter?.requestAlert(for: AlertModel)   
             
         } else {
             // show must go on!
