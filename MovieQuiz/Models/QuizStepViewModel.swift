@@ -21,13 +21,8 @@ import UIKit.UIImage
 /// - term **question: String**: Used to represent a question about the current movie.
 /// *****
 /// - term **questionNumber: String**: Used to represent the question's number of all (ex. "2/10").
-///
-/// - Important: The `QuizStepViewModel` structure has no methods.
-/// - Requires: `import UIKit` - to work with UIImage.
+/// - Requires: `import UIKit.UIImage` - to work with UIImage.
 struct QuizStepViewModel {
-    //  MARK: - Properties
-    //
-    //
     let image: UIImage
     let question: String
     let questionNumber: String

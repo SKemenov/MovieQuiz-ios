@@ -18,12 +18,7 @@ import Foundation
 /// - term **text: String**: Used to represent the alert's message.
 /// *****
 /// - term **buttonText: String**: Used to represent the alert button's label.
-///
-/// - Important: The `QuizResultsViewModel` structure has no methods.
 struct QuizResultsViewModel {
-    //  MARK: - Properties
-    //
-    //
     let title: String
     let text: String
     let buttonText: String
