@@ -11,7 +11,7 @@ import Foundation
 //
 //
 /// A protocol for all alerts that can work with `AlertModel` structure
-protocol AlertPresenterProtocol {
+protocol AlertPresenterProtocol: AnyObject {
   func requestAlert(for model: AlertModel)
 }
 
