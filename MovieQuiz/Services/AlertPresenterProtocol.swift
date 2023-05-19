@@ -10,12 +10,9 @@ import Foundation
 //  MARK: - Protocols
 //
 //
-///// A protocol for all alerts that can work with `AlertModel` structure
-/////
-///// The protocol has `requestAlert()` method
-/////  - important: The method has no returns because `AlertPresenterDelegate` is available.
+/// A protocol for all alerts that can work with `AlertModel` structure
 protocol AlertPresenterProtocol {
-  func requestAlert()
+  func requestAlert(for model: AlertModel)
 }
 
 
