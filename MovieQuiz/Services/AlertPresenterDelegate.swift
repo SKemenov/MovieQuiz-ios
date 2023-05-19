@@ -16,6 +16,6 @@ import Foundation
 protocol AlertPresenterDelegate: AnyObject {
     /// Request a delegate method for updating UI after loading the question.
     /// - Parameter alert: an alert or `nil`
-    func didReceiveAlertFor(alert: AlertModel?)
+    func didReceiveAlert(for model: AlertModel?)
 }
 
