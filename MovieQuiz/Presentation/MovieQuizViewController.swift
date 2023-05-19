@@ -1,7 +1,7 @@
 import UIKit
 
+/// Main viewController of MovieQuiz
 final
-/// <#Description#>
 class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //     MARK: - Outlets
     //
@@ -31,7 +31,7 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     /// - returns: `QuizQuestion` structure or `nil`
     private var currentQuestion: QuizQuestion?
     
-    /// An optional variable compatible with`AlertPresenterProtocol` to provide access to `AlertPresenter` class
+    /// An optional variable compatible with `AlertPresenterProtocol` to provide access to `AlertPresenter` class
     /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
     private var alertPresenter: AlertPresenterProtocol?
     
