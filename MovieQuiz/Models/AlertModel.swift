@@ -17,17 +17,7 @@ done - текст для кнопки алерта buttonText
 // MARK: - Structs
 //
 //
-/// A structure to collect information for the 'AlertPresenter' state of the state machine.and show the final alert with game's score.
-///
-/// The `AlertModel` structure has the following properties:
-///
-/// - term **title: String**: Used to represent the alert's title.
-/// *****
-/// - term **text: String**: Used to represent the alert's message.
-/// *****
-/// - term **buttonText: String**: Used to represent the alert button's label.
-///
-/// - Important: The `AlertModel` structure has no methods.
+/// A structure to collect information for the 'AlertPresenter' and show the final alert with game's score.
 struct AlertModel {
     //  MARK: - Properties
     //
@@ -35,6 +25,7 @@ struct AlertModel {
     let title: String
     let text: String
     let buttonText: String
+    let completion (() -> Void)
   
 }
 
