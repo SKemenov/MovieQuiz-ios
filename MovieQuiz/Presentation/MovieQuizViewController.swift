@@ -1,5 +1,22 @@
 import UIKit
 
+
+struct Movie: Codable {
+    let id: String
+//    let rank: String
+    let title: String
+//    let fullTitle: String
+    let year: String
+//    let image: String
+    let crew: String
+    let imDbRating: String
+//    let imDbRatingCount: String
+}
+
+struct Top: Codable {
+    let items: [Movie]
+}
+
 /// Main viewController of MovieQuiz
 final
 class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
@@ -49,6 +66,12 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         // try to reset round and request the first question
         resetRound()
+        
+        guard let jsonString = loadJsonFrom(file: "top250MoviesIMDB.json") else { return }
+        guard let movies = getMovies(from: jsonString) else { return }
+        print(movies)
+
+        
     }
     
     
@@ -71,7 +94,57 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Methods
     //
     //
+ 
+    func loadJsonFrom(file filename: String) -> String? {
+        // init a variable to make an access to the FileManager and file system of the iOS
+        let fileManager = FileManager.default
+
+        // 2nd option. Using user's Documents folder (documentsURL is optional and request `guard-let`)
+        var documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        guard var documentsURL else { return nil }
+//        print(documentsURL)
+        // set file name
+        let fileName = filename
+        // add file name to the Documents path
+        documentsURL.appendPathComponent(fileName)
+//        print(documentsURL)
+
+        // If file exist - read it
+        if !fileManager.fileExists(atPath: documentsURL.path) {
+            print("file \(fileName) doesn't exist")
+        }
+        let jsonString = try! String(contentsOf: documentsURL)
+            print(jsonString)
+        return jsonString
+
+    }
     
+    /// A method to load only one movie from JSON file
+    func getMovie(from jsonString: String) -> Movie? {
+        
+        do {
+            guard let data = jsonString.data(using: .utf8) else { return nil }
+            let movie = try JSONDecoder().decode(Movie.self, from: data)
+            return movie
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
+        return nil
+    }
+
+    /// A method to load [movies] from JSON files
+    func getMovies(from jsonString: String) -> Top? {
+        
+        do {
+            guard let data = jsonString.data(using: .utf8) else { return nil }
+            let movies = try JSONDecoder().decode(Top.self, from: data)
+            return movies
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
+        return nil
+    }
+
     /// A delegate method to receive question from the factory's delegate.
     /// - Parameter question: `QuizQuestion` structure with the question or `nil`
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -116,7 +189,6 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     ///  - `counterLabel`
     ///  - `imageView`
     ///  - `textLabel`
-    ///
     /// - Parameter quiz: Data from the question viewModel
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
