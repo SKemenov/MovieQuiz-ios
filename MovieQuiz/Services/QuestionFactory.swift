@@ -27,8 +27,8 @@ import Foundation
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
     //
-    /// A delegate variable using to callback from viewController
-    weak var delegate: QuestionFactoryDelegate?
+    /// A delegate variable using to call a delegate from viewController. The best practice is to use `private` and `weak`.
+    private weak var delegate: QuestionFactoryDelegate?
     
     // MARK: - Mock Data
     //
@@ -84,7 +84,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         //            correctAnswer: false)
     ]
     
-    // MARK: - Methods
+    // MARK: - init
     //
     //
     /// A default init for `QuestionFactory` class with a delegate
@@ -94,6 +94,9 @@ class QuestionFactory: QuestionFactoryProtocol {
         self.delegate = delegate
     }
     
+    // MARK: - Methods
+    //
+    //
 
     /// A method to request all necessary data for the next question.
     ///
@@ -102,16 +105,26 @@ class QuestionFactory: QuestionFactoryProtocol {
     /// - version: v.2 using the delegate to update the UI
     /// - Postcondition: used delegate's `didReceiveNextQuestion()` callback method
     func requestNextQuestion()  {
-        /// create half-opened range -  from 0 to the end of questions array - 1
-        let range = 0..<questions.count
-        /// It gets an index as a random number from the range. If has no index, send nil into the delegate and return from the method
-        guard let index = range.randomElement() else {
+//        1st way (with index)
+//        /// create half-opened range -  from 0 to the end of questions array - 1
+//        let range = 0..<questions.count
+//        /// It gets an index as a random number from the range. If has no index, send nil into the delegate and return from the method
+//        guard let index = range.randomElement() else {
+//            delegate?.didReceiveNextQuestion(question: nil)
+//            assertionFailure("question is empty")
+//            return
+//        }
+//
+//        // try to receive a record from questions array with current index or return nil
+//        let question = questions[safe: index]
+        
+//        2nd way
+        guard let question = questions.randomElement() else {
             delegate?.didReceiveNextQuestion(question: nil)
+            assertionFailure("question is empty")
             return
         }
         
-        // try to receive a record from questions array with current index or return nil
-        let question = questions[safe: index]
         /// put `QuizQuestion` structure into the delegate's callback method
         delegate?.didReceiveNextQuestion(question: question)
     }

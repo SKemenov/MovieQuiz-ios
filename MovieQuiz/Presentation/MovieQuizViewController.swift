@@ -1,25 +1,8 @@
 import UIKit
 
 
-struct Movie: Codable {
-    let id: String
-//    let rank: String
-    let title: String
-//    let fullTitle: String
-    let year: String
-//    let image: String
-    let crew: String
-    let imDbRating: String
-//    let imDbRatingCount: String
-}
-
-struct Top: Codable {
-    let items: [Movie]
-}
-
 /// Main viewController of MovieQuiz
-final
-class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     //     MARK: - Outlets
     //
     //
@@ -30,27 +13,20 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var noButton: UIButton!
     
     
-    //  MARK: - Variables, Constants
+    //  MARK: - Properties
     //
     ///
     private var currentQuestionIndex: Int = 0
     /// A variable with total amound of player's correct answers
     private var correctAnswers: Int = 0
     /// A constant with total amound of questions for each round
-    private let questionsAmount: Int = 10
+    private let questionsAmount: Int = 3
     
-    /// An optional variable compatible with`QuestionFactoryProtocol` to provide access to this Factory
-    /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
     private var questionFactory: QuestionFactoryProtocol?
-    
-    /// An optional variable with data of the current question
-    /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
-    /// - returns: `QuizQuestion` structure or `nil`
     private var currentQuestion: QuizQuestion?
-    
-    /// An optional variable compatible with `AlertPresenterProtocol` to provide access to `AlertPresenter` class
-    /// - important: Use `guard-let` or `if-let` to unwrap the value of this optional
     private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticService?
+    
     
     // MARK: - Lifecycle
     //
@@ -58,19 +34,11 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // init the presenter
         alertPresenter = AlertPresenter(viewController: self)
-        
-        // init the factory
         questionFactory = QuestionFactory(delegate: self)
+        statisticService = StatisticServiceImplementation()
         
-        // try to reset round and request the first question
         resetRound()
-        
-        guard let jsonString = loadJsonFrom(file: "top250MoviesIMDB.json") else { return }
-        guard let movies = getMovies(from: jsonString) else { return }
-        print(movies)
-
         
     }
     
@@ -84,7 +52,6 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         showAnswerResult(isCorrect: currentQuestion.correctAnswer ? true : false)
     }
     
-    
     /// An action for the No button
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion else { return }
@@ -92,72 +59,7 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Methods
-    //
-    //
- 
-    func loadJsonFrom(file filename: String) -> String? {
-        // init a variable to make an access to the FileManager and file system of the iOS
-        let fileManager = FileManager.default
 
-        // 2nd option. Using user's Documents folder (documentsURL is optional and request `guard-let`)
-        var documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-        guard var documentsURL else { return nil }
-//        print(documentsURL)
-        // set file name
-        let fileName = filename
-        // add file name to the Documents path
-        documentsURL.appendPathComponent(fileName)
-//        print(documentsURL)
-
-        // If file exist - read it
-        if !fileManager.fileExists(atPath: documentsURL.path) {
-            print("file \(fileName) doesn't exist")
-        }
-        let jsonString = try! String(contentsOf: documentsURL)
-            print(jsonString)
-        return jsonString
-
-    }
-    
-    /// A method to load only one movie from JSON file
-    func getMovie(from jsonString: String) -> Movie? {
-        
-        do {
-            guard let data = jsonString.data(using: .utf8) else { return nil }
-            let movie = try JSONDecoder().decode(Movie.self, from: data)
-            return movie
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-        return nil
-    }
-
-    /// A method to load [movies] from JSON files
-    func getMovies(from jsonString: String) -> Top? {
-        
-        do {
-            guard let data = jsonString.data(using: .utf8) else { return nil }
-            let movies = try JSONDecoder().decode(Top.self, from: data)
-            return movies
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-        return nil
-    }
-
-    /// A delegate method to receive question from the factory's delegate.
-    /// - Parameter question: `QuizQuestion` structure with the question or `nil`
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        /// while receiving `nil` return without updating UI
-        guard let question else { return }
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        // use async to show updated UI
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
-    }
-    
     // A method to reset the round (at the begining and before running the next round)
     func resetRound() {
         // make a border for the first question the same as in the Firma protopype
@@ -182,7 +84,6 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
-    
     /// A private method  to perpesent data from the question viewModel into UI elements
     ///
     /// The method update data for the following UI elements:
@@ -195,7 +96,6 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.image = step.image
         textLabel.text = step.question
     }
-    
     
     /// A private method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
@@ -224,21 +124,13 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = state
     }
     
-    
     /// A private method which showing the next question or the result alert at the end
     private func showNextQuestionOrResults() {
+        
         // if it's the final question show the result's alert, otherwise - go the next question
         if currentQuestionIndex == questionsAmount - 1 {
             
-            // Init the model
-            let alertModel = AlertModel(title: "Этот раунд окончен!",
-                                        text: "Ваш результат \(correctAnswers)/\(questionsAmount)",
-                                        buttonText: "Сыграть ещё раз",
-                                        completion: resetRound
-            )
-            
-            // request the alert, show the final scene - The End
-            alertPresenter?.requestAlert(for: alertModel)
+            showFinalResults()
             
         } else {
             // show must go on!
@@ -251,70 +143,64 @@ class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
+    
+    
+    private func showFinalResults() {
+        statisticService?.store(correct: correctAnswers, total: questionsAmount)
+        
+        // Init the model
+        let alertModel = AlertModel(
+            title: "Этот раунд окончен!",
+            text: makeResultsMessage(),
+            buttonText: "Сыграть ещё раз",
+            completion: { [weak self ] in
+                self?.resetRound()
+            }
+        )
+        
+        // request the alert, show the final scene - The End
+        alertPresenter?.requestAlert(for: alertModel)
+    }
+    
+    //
+    private func makeResultsMessage() -> String {
+                
+//        guard let statisticService = statisticService,
+//              let bestGame = statisticService.bestGame else {
+////            assertionFailure("error message")
+//            return ""
+//        }
+     
+        guard let statisticService else {
+//            assertionFailure("error message")
+            return ""
+        }
+
+        let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
+        let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+        let bestGameLine = "Рекорд: \(statisticService.bestGame?.correct)/\(statisticService.bestGame?.total)"
+        let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
+        let averageAccuracyLine = "Средняя точность: \(accuracy)"
+        let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
+        
+        return resultMessage
+    }
+    
 }
 
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    /// A delegate method to receive question from the factory's delegate.
+    /// - Parameter question: `QuizQuestion` structure with the question or `nil`
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        
+        /// while receiving `nil` return without updating UI
+        guard let question else { return }
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        // use async to show updated UI
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
+}
 
-
-/*
- Mock-данные
- 
- 
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
- 
- 
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- 
- 
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */

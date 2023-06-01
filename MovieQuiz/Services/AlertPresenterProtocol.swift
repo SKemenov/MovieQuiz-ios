@@ -8,11 +8,10 @@
 import Foundation
 
 //  MARK: - Protocols
-//
-//
 /// A protocol for all alerts that can work with `AlertModel` structure
 protocol AlertPresenterProtocol: AnyObject {
-  func requestAlert(for model: AlertModel)
+    
+    func requestAlert(for model: AlertModel)
 }
 
 
