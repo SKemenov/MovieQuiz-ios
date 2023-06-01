@@ -7,7 +7,7 @@
 
 import Foundation
 
-//  MARK: - Protocols
+//  MARK: - Protocol
 /// A protocol for all alerts that can work with `AlertModel` structure
 protocol AlertPresenterProtocol: AnyObject {
     

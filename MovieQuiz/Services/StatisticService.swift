@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Protocol
+
 protocol StatisticService {
     
     var totalAccuracy: Double { get }
@@ -16,6 +18,7 @@ protocol StatisticService {
     func store(correct count: Int, total amount: Int)
 }
 
+// MARK: - Class
 
 final class StatisticServiceImplementation {
 
@@ -28,6 +31,7 @@ final class StatisticServiceImplementation {
     private let encoder: JSONEncoder
     private let dateProvider: () -> Date
 
+    // MARK: - init
     init(
         userDefaults: UserDefaults = .standard,
         decoder: JSONDecoder = JSONDecoder(),
@@ -44,6 +48,7 @@ final class StatisticServiceImplementation {
     
         
 extension StatisticServiceImplementation: StatisticService {
+    // MARK: - Extention's Properties
 
     var gamesCount: Int {
         get {
@@ -96,7 +101,8 @@ extension StatisticServiceImplementation: StatisticService {
         }
     }
     
-    
+    // MARK: - Extention's Functions
+
     func store(correct count: Int, total amount: Int) {
         self.correct += count
         self.total += amount

@@ -144,9 +144,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    
     private func showFinalResults() {
-        print(correctAnswers, questionsAmount)
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
         
         // Init the model
@@ -185,6 +183,7 @@ final class MovieQuizViewController: UIViewController {
 }
 
 extension MovieQuizViewController: QuestionFactoryDelegate {
+    
     /// A delegate method to receive question from the factory's delegate.
     /// - Parameter question: `QuizQuestion` structure with the question or `nil`
     func didReceiveNextQuestion(question: QuizQuestion?) {

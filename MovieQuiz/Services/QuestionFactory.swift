@@ -7,9 +7,7 @@
 
 import Foundation
 
-//  MARK: - Classes
-//
-//
+//  MARK: - Class
 
 /// A `QuestionFactory` class is a Service (or a Factory)  to generate, load, store all information about questions.
 ///
@@ -23,7 +21,6 @@ import Foundation
 ///
 /// - term **func requestNextQuestion()**: A method to request all necessary data for the next question.
 ///  - version: 2.0 with delegate
-
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
     //
@@ -85,8 +82,6 @@ class QuestionFactory: QuestionFactoryProtocol {
     ]
     
     // MARK: - init
-    //
-    //
     /// A default init for `QuestionFactory` class with a delegate
     ///
     /// - Parameter delegate: A delegate to init the Factory
@@ -95,8 +90,6 @@ class QuestionFactory: QuestionFactoryProtocol {
     }
     
     // MARK: - Methods
-    //
-    //
 
     /// A method to request all necessary data for the next question.
     ///

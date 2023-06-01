@@ -6,6 +6,7 @@
 //
 
 import Foundation
+//  MARK: - Protocol
 
 /// This's a delegate to control receiving questions from our Factory.
 ///
