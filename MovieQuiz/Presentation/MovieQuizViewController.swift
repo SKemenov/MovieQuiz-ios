@@ -20,7 +20,7 @@ final class MovieQuizViewController: UIViewController {
     /// A variable with total amound of player's correct answers
     private var correctAnswers: Int = 0
     /// A constant with total amound of questions for each round
-    private let questionsAmount: Int = 3
+    private let questionsAmount: Int = 10
     
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
@@ -146,6 +146,7 @@ final class MovieQuizViewController: UIViewController {
     
     
     private func showFinalResults() {
+        print(correctAnswers, questionsAmount)
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
         
         // Init the model
@@ -159,28 +160,23 @@ final class MovieQuizViewController: UIViewController {
         )
         
         // request the alert, show the final scene - The End
-        alertPresenter?.requestAlert(for: alertModel)
+        alertPresenter?.show(for: alertModel)
     }
     
     //
     private func makeResultsMessage() -> String {
                 
-//        guard let statisticService = statisticService,
-//              let bestGame = statisticService.bestGame else {
-////            assertionFailure("error message")
-//            return ""
-//        }
-     
-        guard let statisticService else {
-//            assertionFailure("error message")
+        guard let statisticService = statisticService,
+              let bestGame = statisticService.bestGame else {
+            assertionFailure("error message")
             return ""
         }
-
+     
         let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
         let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let bestGameLine = "Рекорд: \(statisticService.bestGame?.correct)/\(statisticService.bestGame?.total)"
+        let bestGameLine = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
         let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
-        let averageAccuracyLine = "Средняя точность: \(accuracy)"
+        let averageAccuracyLine = "Средняя точность: \(accuracy)%"
         let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
         
         return resultMessage

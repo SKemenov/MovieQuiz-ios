@@ -21,7 +21,7 @@ extension BestGame: Comparable {
             return 0
         }
         // total questions can be different, so it's better to use accuracy
-        return Double(correct / total)
+        return Double(correct) / Double(total)
     }
     
     // MARK: - Functions

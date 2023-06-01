@@ -18,14 +18,13 @@ final class AlertPresenter {
         self.viewController = viewController
     }
     
-    
 }
 
 extension AlertPresenter: AlertPresenterProtocol {
     // MARK: - Methods
     
     /// A method to show the alert with data from `AlertModel` structure
-    func requestAlert(for model: AlertModel)  {
+    func show(for model: AlertModel)  {
 
         // init the alert
         let alert = UIAlertController(
