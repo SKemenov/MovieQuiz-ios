@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// A structure to hold an information about the best game.
+
 struct BestGame: Codable {
     let correct: Int
     let total: Int
@@ -15,16 +17,19 @@ struct BestGame: Codable {
 
 extension BestGame: Comparable {
     // MARK: - Properties
+
+    // total questions can be different, so it's better to use accuracy
     private var accuracy: Double {
-        // checking dividing by zero
+        
+        // have to check dividing by zero
         guard total != 0 else {
             return 0
         }
-        // total questions can be different, so it's better to use accuracy
         return Double(correct) / Double(total)
     }
     
     // MARK: - Functions
+    
     static func < (lhs: BestGame, rhs: BestGame) -> Bool {
             lhs.accuracy < rhs.accuracy
         }

@@ -7,17 +7,10 @@
 
 import Foundation
 // MARK: - Structs
-//
-//
+
+
 /// A structure to collect information for the 'resultShowed' state of the state machine.
-///
-/// The `QuizResultsViewModel` structure has the following properties:
-///
-/// - term **title: String**: Used to represent the alert's title.
-/// *****
-/// - term **text: String**: Used to represent the alert's message.
-/// *****
-/// - term **buttonText: String**: Used to represent the alert button's label.
+
 struct QuizResultsViewModel {
     let title: String
     let text: String

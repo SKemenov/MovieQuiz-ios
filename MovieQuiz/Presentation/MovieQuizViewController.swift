@@ -4,8 +4,7 @@ import UIKit
 /// Main viewController of MovieQuiz
 final class MovieQuizViewController: UIViewController {
     //     MARK: - Outlets
-    //
-    //
+    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -14,16 +13,17 @@ final class MovieQuizViewController: UIViewController {
     
     
     //  MARK: - Properties
-    //
+    
     ///
     private var currentQuestionIndex: Int = 0
     /// A variable with total amound of player's correct answers
     private var correctAnswers: Int = 0
     /// A constant with total amound of questions for each round
     private let questionsAmount: Int = 10
-    
-    private var questionFactory: QuestionFactoryProtocol?
+
     private var currentQuestion: QuizQuestion?
+
+    private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
     
@@ -44,15 +44,12 @@ final class MovieQuizViewController: UIViewController {
     
     
     // MARK: - Actions
-    //
-    //
-    /// An action for the Yes button
+
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion else { return }
         showAnswerResult(isCorrect: currentQuestion.correctAnswer ? true : false)
     }
     
-    /// An action for the No button
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion else { return }
         showAnswerResult(isCorrect: !currentQuestion.correctAnswer ? true : false)
@@ -60,7 +57,7 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - Methods
 
-    // A method to reset the round (at the begining and before running the next round)
+    /// A method to reset the round (at the begining and before running the next round)
     func resetRound() {
         // make a border for the first question the same as in the Firma protopype
         imageView.layer.masksToBounds = true
@@ -85,12 +82,6 @@ final class MovieQuizViewController: UIViewController {
     }
     
     /// A private method  to perpesent data from the question viewModel into UI elements
-    ///
-    /// The method update data for the following UI elements:
-    ///  - `counterLabel`
-    ///  - `imageView`
-    ///  - `textLabel`
-    /// - Parameter quiz: Data from the question viewModel
     private func show(quiz step: QuizStepViewModel) {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
@@ -100,14 +91,11 @@ final class MovieQuizViewController: UIViewController {
     /// A private method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
         
-        // show a Border with 8px wide and Green (if win) of Red (if lose)
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = ( isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
         
-        // disable buttons
         enableButtons(false)
         
-        // Update the Score variable. If the answer is correct add 1, otherwise, nothing
         correctAnswers += ( isCorrect ? 1 : 0 )
         
         // wait 1 sec after that enable buttons and go next to show the next question
@@ -129,25 +117,21 @@ final class MovieQuizViewController: UIViewController {
         
         // if it's the final question show the result's alert, otherwise - go the next question
         if currentQuestionIndex == questionsAmount - 1 {
-            
             showFinalResults()
-            
         } else {
-            // show must go on!
             currentQuestionIndex += 1
             
             // hide the border (width=0) around the image before showing the next question
             imageView.layer.borderWidth = 0
             
-            // prepare the next question and
             questionFactory?.requestNextQuestion()
         }
     }
     
+    /// A private method to save final score and call an alert
     private func showFinalResults() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
         
-        // Init the model
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
             text: makeResultsMessage(),
@@ -156,12 +140,10 @@ final class MovieQuizViewController: UIViewController {
                 self?.resetRound()
             }
         )
-        
-        // request the alert, show the final scene - The End
         alertPresenter?.show(for: alertModel)
     }
     
-    //
+    /// A private method to prepare and make the final score message
     private func makeResultsMessage() -> String {
                 
         guard let statisticService = statisticService,
@@ -182,6 +164,8 @@ final class MovieQuizViewController: UIViewController {
     
 }
 
+// MARK: - Extensions
+// conform to Protocol QuestionFactoryDelegate
 extension MovieQuizViewController: QuestionFactoryDelegate {
     
     /// A delegate method to receive question from the factory's delegate.

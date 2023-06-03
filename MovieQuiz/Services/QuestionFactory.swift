@@ -10,28 +10,15 @@ import Foundation
 //  MARK: - Class
 
 /// A `QuestionFactory` class is a Service (or a Factory)  to generate, load, store all information about questions.
-///
-/// This class compatible with `QuestionFactoryProtocol`
-/// 
-/// ### Properties
-/// `QuestionFactory` has the following properties: an array with mock data - `questions: [QuizQuestion]`.
-///
-/// ### Methods
-/// This class has the next private method:
-///
-/// - term **func requestNextQuestion()**: A method to request all necessary data for the next question.
-///  - version: 2.0 with delegate
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
-    //
+
     /// A delegate variable using to call a delegate from viewController. The best practice is to use `private` and `weak`.
     private weak var delegate: QuestionFactoryDelegate?
     
     // MARK: - Mock Data
-    //
-    //
+
     /// An array with all data for the questions
-    /// - Returns: a record of data by the `QuizQuestion` structure
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             name: "The Godfather",
@@ -82,9 +69,6 @@ class QuestionFactory: QuestionFactoryProtocol {
     ]
     
     // MARK: - init
-    /// A default init for `QuestionFactory` class with a delegate
-    ///
-    /// - Parameter delegate: A delegate to init the Factory
     init(delegate: QuestionFactoryDelegate) {
         self.delegate = delegate
     }
@@ -92,11 +76,6 @@ class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Methods
 
     /// A method to request all necessary data for the next question.
-    ///
-    /// After requesting the question data using the delegate's callback method to load `QuizQuestion` structure into UI
-    /// - Returns: the #2 version of the method has no returns
-    /// - version: v.2 using the delegate to update the UI
-    /// - Postcondition: used delegate's `didReceiveNextQuestion()` callback method
     func requestNextQuestion()  {
 //        1st way (with index)
 //        /// create half-opened range -  from 0 to the end of questions array - 1

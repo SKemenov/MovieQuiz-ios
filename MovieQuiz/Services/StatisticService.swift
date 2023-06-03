@@ -9,17 +9,19 @@ import Foundation
 
 // MARK: - Protocol
 
+/// A protocol to CDUR the information about game score
 protocol StatisticService {
     
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
-    var bestGame: BestGame? { get set }
+    var bestGame: BestGame? { get }
     
     func store(correct count: Int, total amount: Int)
 }
 
 // MARK: - Class
 
+/// A classe to work with the information about game score
 final class StatisticServiceImplementation {
 
     private enum Keys: String {
@@ -46,8 +48,9 @@ final class StatisticServiceImplementation {
 
 }
     
-        
+    // conform class to protocol
 extension StatisticServiceImplementation: StatisticService {
+    
     // MARK: - Extention's Properties
 
     var gamesCount: Int {
@@ -103,6 +106,7 @@ extension StatisticServiceImplementation: StatisticService {
     
     // MARK: - Extention's Functions
 
+    /// A method to collect and store the game score, and if it needs update info about the best game
     func store(correct count: Int, total amount: Int) {
         self.correct += count
         self.total += amount
