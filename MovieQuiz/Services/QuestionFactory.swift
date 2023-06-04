@@ -86,8 +86,6 @@ class QuestionFactory: QuestionFactoryProtocol {
 //            assertionFailure("question is empty")
 //            return
 //        }
-//
-//        // try to receive a record from questions array with current index or return nil
 //        let question = questions[safe: index]
         
 //        2nd way

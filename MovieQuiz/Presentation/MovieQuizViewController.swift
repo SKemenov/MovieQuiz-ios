@@ -14,7 +14,6 @@ final class MovieQuizViewController: UIViewController {
     
     //  MARK: - Properties
     
-    ///
     private var currentQuestionIndex: Int = 0
     /// A variable with total amound of player's correct answers
     private var correctAnswers: Int = 0
@@ -98,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
         
         correctAnswers += ( isCorrect ? 1 : 0 )
         
-        // wait 1 sec after that enable buttons and go next to show the next question
+        // wait 1 sec after that enable buttons and go next to run the closure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) { [weak self] in
             guard let self else { return }
             self.enableButtons(true)

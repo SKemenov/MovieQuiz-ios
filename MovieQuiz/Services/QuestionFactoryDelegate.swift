@@ -12,6 +12,6 @@ import Foundation
 /// This's a delegate to control receiving questions from our Factory.
 protocol QuestionFactoryDelegate: AnyObject {
     
-    /// Request a callback method for updating UI after loading the question.
+    /// Request a delegate method for updating UI after loading the question.
     func didReceiveNextQuestion(question: QuizQuestion?)
 }

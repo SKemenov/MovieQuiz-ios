@@ -16,6 +16,7 @@ protocol StatisticService {
     var gamesCount: Int { get }
     var bestGame: BestGame? { get }
     
+    /// A method to collect and store the game score, and if it needs update info about the best game
     func store(correct count: Int, total amount: Int)
 }
 
@@ -24,6 +25,7 @@ protocol StatisticService {
 /// A classe to work with the information about game score
 final class StatisticServiceImplementation {
 
+    // This enum used to naming space in User Defaults to store our statistic
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
@@ -34,6 +36,8 @@ final class StatisticServiceImplementation {
     private let dateProvider: () -> Date
 
     // MARK: - init
+    
+    // can use default values in the init() because in this case they are all time the same
     init(
         userDefaults: UserDefaults = .standard,
         decoder: JSONDecoder = JSONDecoder(),
@@ -55,9 +59,11 @@ extension StatisticServiceImplementation: StatisticService {
 
     var gamesCount: Int {
         get {
+            // here using userDefaults to read Int value from space, named gamesCount
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
+            //here using 
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
@@ -106,7 +112,6 @@ extension StatisticServiceImplementation: StatisticService {
     
     // MARK: - Extention's Functions
 
-    /// A method to collect and store the game score, and if it needs update info about the best game
     func store(correct count: Int, total amount: Int) {
         self.correct += count
         self.total += amount

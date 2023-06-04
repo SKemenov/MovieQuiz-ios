@@ -7,7 +7,7 @@
 
 import Foundation
 
-// import into the viewModel only UIImage, not the all UIKit
+// import into the viewModel only UIImage, not all UIKit library
 import UIKit.UIImage
 
 // MARK: - Structs
