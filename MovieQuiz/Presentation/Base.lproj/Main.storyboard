@@ -3,7 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -25,6 +25,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ptX-MT-V0c">
+                                <rect key="frame" x="186.66666666666666" y="69" width="20" height="714"/>
+                            </activityIndicatorView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="hUE-3j-F9g">
                                 <rect key="frame" x="20" y="69" width="353" height="749"/>
                                 <subviews>
@@ -107,6 +110,8 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="hUE-3j-F9g" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="7Yd-4a-GgQ"/>
+                            <constraint firstItem="ptX-MT-V0c" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="DMd-Tw-pbn"/>
+                            <constraint firstItem="ptX-MT-V0c" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Myq-Dd-b2p"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hUE-3j-F9g" secondAttribute="trailing" constant="20" id="vAe-iN-57d"/>
                             <constraint firstItem="hUE-3j-F9g" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="w1j-Py-cMt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hUE-3j-F9g" secondAttribute="bottom" id="yk0-Sn-Eix"/>
@@ -115,6 +120,7 @@
                     <connections>
                         <outlet property="counterLabel" destination="u9K-Mk-CS8" id="hAf-bo-qDO"/>
                         <outlet property="imageView" destination="RbO-GV-MjK" id="2S8-gs-eov"/>
+                        <outlet property="loadingIndicator" destination="ptX-MT-V0c" id="Pq7-fX-pt4"/>
                         <outlet property="noButton" destination="rl8-X9-PRK" id="Du7-I1-i52"/>
                         <outlet property="textLabel" destination="3rh-A2-cBj" id="yAa-Fb-SPw"/>
                         <outlet property="yesButton" destination="dwz-Q8-ghG" id="df0-XI-KBc"/>

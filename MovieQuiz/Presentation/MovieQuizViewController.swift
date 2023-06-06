@@ -10,6 +10,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+    
     
     
     //  MARK: - Properties
@@ -37,6 +39,9 @@ final class MovieQuizViewController: UIViewController {
         questionFactory = QuestionFactory(delegate: self)
         statisticService = StatisticServiceImplementation()
         
+        showLoadingIndicator(true)
+        showNetworkError(message: "Невозможно загрузить данные")
+
         resetRound()
         
     }
@@ -116,7 +121,7 @@ final class MovieQuizViewController: UIViewController {
         
         // if it's the final question show the result's alert, otherwise - go the next question
         if currentQuestionIndex == questionsAmount - 1 {
-            showFinalResults()
+             showFinalResults()
         } else {
             currentQuestionIndex += 1
             
@@ -159,6 +164,29 @@ final class MovieQuizViewController: UIViewController {
         let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
         
         return resultMessage
+    }
+    
+    private func showLoadingIndicator(_ status: Bool) {
+        loadingIndicator.isHidden = status
+        if status {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+    
+    private func showNetworkError(message: String) {
+        showLoadingIndicator(false)
+        
+        let alertModel = AlertModel(
+            title: "Ошибка",
+            text: message,
+            buttonText: "Попробовать ещё раз",
+            completion: { [weak self ] in
+                self?.resetRound()
+            }
+        )
+        alertPresenter?.show(for: alertModel)
     }
     
 }
