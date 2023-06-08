@@ -36,14 +36,16 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         
         alertPresenter = AlertPresenter(viewController: self)
-        questionFactory = QuestionFactory(delegate: self)
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MovieLoader())
         statisticService = StatisticServiceImplementation()
         
         showLoadingIndicator(true)
-        sleep(5)
-        showNetworkError(message: "Невозможно загрузить данные")
+        questionFactory?.loadData()
 
-        //resetRound()
+        sleep(5)
+ //       showNetworkError(message: "Невозможно загрузить данные")
+
+        resetRound()
         
     }
     
@@ -81,7 +83,7 @@ final class MovieQuizViewController: UIViewController {
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         // return image by the name or empty image as UIImage()
         return QuizStepViewModel(
-            image: UIImage(named: model.name) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -127,7 +129,7 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             
             // hide the border (width=0) around the image before showing the next question
-            imageView.layer.borderWidth = 0
+            imageView.layer.borderColor = UIColor.clear.cgColor
             
             questionFactory?.requestNextQuestion()
         }

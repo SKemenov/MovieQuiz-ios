@@ -12,4 +12,5 @@ import Foundation
 /// A protocol for all Factories that can work with `QuizQuestion` structure
 protocol QuestionFactoryProtocol {    
     func requestNextQuestion()
+    func loadData()
 }
