@@ -196,6 +196,16 @@ final class MovieQuizViewController: UIViewController {
 // conform to Protocol QuestionFactoryDelegate
 extension MovieQuizViewController: QuestionFactoryDelegate {
     
+    func didLoadDataFromServer() {
+        showLoadingIndicator(false)
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
+    
     /// A delegate method to receive question from the factory's delegate.
     /// - Parameter question: `QuizQuestion` structure with the question or `nil`
     func didReceiveNextQuestion(question: QuizQuestion?) {

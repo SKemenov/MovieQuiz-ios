@@ -17,10 +17,10 @@ struct MostPopularMovies: Codable {
 struct MostPopularMovie: Codable {
     let title: String
     let rating: String
-    let imageURL: URL
+    let imageURL: String
     
     // enum requered for renaiming fields
-    private enum CodingKeys: String, CodingKeys {
+    private enum CodingKeys: String, CodingKey {
         case title = "fullTitle"
         case reting = "imDbRating"
         case imageURL = "image"
