@@ -40,9 +40,10 @@ final class MovieQuizViewController: UIViewController {
         statisticService = StatisticServiceImplementation()
         
         showLoadingIndicator(true)
+        sleep(5)
         showNetworkError(message: "Невозможно загрузить данные")
 
-        resetRound()
+        //resetRound()
         
     }
     

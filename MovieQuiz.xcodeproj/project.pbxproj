@@ -16,6 +16,7 @@
 		AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */; };
 		AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77F5732857F8810062FB14 /* Date+Extensions.swift */; };
 		AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7AFA542836189F00399704 /* Array+Extensions.swift */; };
+		E91725E72A31A27500669EF7 /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91725E62A31A27500669EF7 /* MostPopularMovies.swift */; };
 		E91F5AE829FC465800A4BF36 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E91F5AE629FC465700A4BF36 /* YS Display-Medium.ttf */; };
 		E91F5AE929FC465800A4BF36 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E91F5AE729FC465800A4BF36 /* YS Display-Bold.ttf */; };
 		E92373012A2231FD0027564D /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92373002A2231FD0027564D /* StatisticService.swift */; };
@@ -44,6 +45,7 @@
 		AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		AD77F5732857F8810062FB14 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		AD7AFA542836189F00399704 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		E91725E62A31A27500669EF7 /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
 		E91F5AE629FC465700A4BF36 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		E91F5AE729FC465800A4BF36 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		E92373002A2231FD0027564D /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				E93890632A112E7100952563 /* QuizResultsViewModel.swift */,
 				E95081692A15F2CB007F4C67 /* AlertModel.swift */,
 				E9BB98702A25C5810019A3A2 /* BestGame.swift */,
+				E91725E62A31A27500669EF7 /* MostPopularMovies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
+				E91725E72A31A27500669EF7 /* MostPopularMovies.swift in Sources */,
 				E950816C2A15F321007F4C67 /* AlertPresenter.swift in Sources */,
 				E950816A2A15F2CB007F4C67 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
