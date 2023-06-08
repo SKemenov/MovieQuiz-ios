@@ -40,10 +40,8 @@ final class MovieQuizViewController: UIViewController {
         statisticService = StatisticServiceImplementation()
         
         showLoadingIndicator(true)
-        questionFactory?.loadData()
 
-        sleep(5)
- //       showNetworkError(message: "Невозможно загрузить данные")
+        questionFactory?.loadData()
 
         resetRound()
         
@@ -170,7 +168,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func showLoadingIndicator(_ status: Bool) {
-        loadingIndicator.isHidden = status
+        loadingIndicator.isHidden = !status
         if status {
             loadingIndicator.startAnimating()
         } else {
@@ -186,7 +184,8 @@ final class MovieQuizViewController: UIViewController {
             text: message,
             buttonText: "Попробовать ещё раз",
             completion: { [weak self ] in
-                self?.resetRound()
+                guard let self else { return }
+                self.questionFactory?.loadData()
             }
         )
         alertPresenter?.show(for: alertModel)

@@ -19,11 +19,9 @@ struct MovieLoader: MoviesLoading {
     private let imdbToken = "k_gbe4ep0b"
     
     private var mostPopularMoviesUrl: URL {
-//        guard let url = URL(string: imdbUrl + imdbToken) else {
-            guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_gbe4ep0b") else {
+        guard let url = URL(string: imdbUrl + imdbToken) else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
-        print("url \n \(url)\n\n")
         return url
     }
     
@@ -34,15 +32,12 @@ struct MovieLoader: MoviesLoading {
                 case .success(let data):
                     do {
                         let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
-                        print("mostPopularMovies\n\(mostPopularMovies)\n\n")
                         handler(.success(mostPopularMovies))
                     }
                     catch {
-                        print("catch error")
                         handler(.failure(error))
                     }
                 case .failure(let error):
-                    print("failure")
                     handler(.failure(error))
             }
         }

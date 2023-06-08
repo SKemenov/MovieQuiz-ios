@@ -19,59 +19,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     
     private var movies: [MostPopularMovie] = []
-    
-    // MARK: - Mock Data
 
-    /// An array with all data for the questions
-//    private let questions: [QuizQuestion] = [
-//        QuizQuestion(
-//            name: "The Godfather",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: true),
-//        QuizQuestion(
-//            name: "The Dark Knight",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: true),
-//        QuizQuestion(
-//            name: "Kill Bill",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: true),
-//        QuizQuestion(
-//            name: "The Avengers",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: true),
-//        QuizQuestion(
-//            name: "Deadpool",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: true),
-//        QuizQuestion(
-//            name: "The Green Knight",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: true),
-//        QuizQuestion(
-//            name: "Old",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: false),
-//        QuizQuestion(
-//            name: "The Ice Age Adventures of Buck Wild",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: false),
-//        QuizQuestion(
-//            name: "Tesla",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: false),
-//        QuizQuestion(
-//            name: "Vivarium",
-//            text: "Рейтинг этого фильма больше чем 6?",
-//            correctAnswer: false)
-//        // Fake movie to check loading empty UIImage()
-//        //        ,
-//        //        QuizQuestion(
-//        //            name: "Crazy",
-//        //            text: "Рейтинг этого фильма больше чем 6?",
-//        //            correctAnswer: false)
-//    ]
-    
     // MARK: - init
     init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoading) {
         self.delegate = delegate
@@ -82,27 +30,7 @@ class QuestionFactory: QuestionFactoryProtocol {
 
     /// A method to request all necessary data for the next question.
     func requestNextQuestion()  {
-//        1st way (with index)
-//        /// create half-opened range -  from 0 to the end of questions array - 1
-//        let range = 0..<questions.count
-//        /// It gets an index as a random number from the range. If has no index, send nil into the delegate and return from the method
-//        guard let index = range.randomElement() else {
-//            delegate?.didReceiveNextQuestion(question: nil)
-//            assertionFailure("question is empty")
-//            return
-//        }
-//        let question = questions[safe: index]
-        
-//        2nd way
-//        guard let question = questions.randomElement() else {
-//            delegate?.didReceiveNextQuestion(question: nil)
-//            assertionFailure("question is empty")
-//            return
-//        }
-//
-//        /// put `QuizQuestion` structure into the delegate's callback method
-//        delegate?.didReceiveNextQuestion(question: question)
-        
+
         // 3rd way
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -114,12 +42,12 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             var imageData = Data()
             do {
-                imageData = try Data(contentsOf: movie.image)
+                imageData = try Data(contentsOf: movie.resizedImageURL)
             }
             catch {
                 print("Failed to load image from imageURL into imageData")
             }
-            
+
             let rating = Float(movie.imDbRating) ?? 0
             
             let questionLevel = (1...9).randomElement() ?? 0
@@ -139,6 +67,7 @@ class QuestionFactory: QuestionFactoryProtocol {
         }
     }
 
+    /// A method to load json from IMDb API 
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
