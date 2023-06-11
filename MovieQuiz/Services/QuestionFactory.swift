@@ -43,33 +43,38 @@ class QuestionFactory: QuestionFactoryProtocol {
                     self?.delegate?.didFailToLoadData(with: error)
                 }
             }
-
-            let rating = Float(movie.rating) ?? 0
-            // set range for the text closer to the rating or to the limits (4...9)
-            let lessThanRating = rating < 4 ? 4 : Int(rating) - 2
-            let moreThanRating = rating > 7 ? 9 : Int(rating) + 2
-            let questionLevel = (lessThanRating...moreThanRating).randomElement() ?? 0
             
-            let text: String
-            let correctAnswer: Bool
-            
-            if Bool.random() {
-                text = "Рейтинг этого фильма больше \(questionLevel)?"
-                correctAnswer = rating > Float(questionLevel)
-            } else {
-                text = "Рейтинг этого фильма меньше \(questionLevel)?"
-                correctAnswer = rating < Float(questionLevel)
-            }
-            
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
+            let question = makeQuestionWith(rating: movie.rating, imageData: imageData)
             
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
         }
+    }
+    
+    private func makeQuestionWith(rating: String, imageData: Data) -> QuizQuestion {
+        let rating = Float(rating) ?? 0
+        // set range for the text closer to the rating or to the limits (4...9)
+        let lessThanRating = rating < 4 ? 4 : Int(rating) - 2
+        let moreThanRating = rating > 7 ? 9 : Int(rating) + 2
+        let ratingLevel = (lessThanRating...moreThanRating).randomElement() ?? 0
+        
+        let text: String
+        let correctAnswer: Bool
+        
+        if Bool.random() {
+            text = "Рейтинг этого фильма больше \(ratingLevel)?"
+            correctAnswer = rating > Float(ratingLevel)
+        } else {
+            text = "Рейтинг этого фильма меньше \(ratingLevel)?"
+            correctAnswer = rating < Float(ratingLevel)
+        }
+        
+        let question = QuizQuestion(image: imageData,
+                                    text: text,
+                                    correctAnswer: correctAnswer)
+        return question
     }
 
     func loadData() {
