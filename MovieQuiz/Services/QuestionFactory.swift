@@ -9,13 +9,11 @@ import Foundation
 
 //  MARK: - Class
 
-/// A `QuestionFactory` class is a Service (or a Factory)  to generate, load, store all information about questions.
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
 
     private weak var delegate: QuestionFactoryDelegate?
-    
-    private let moviesLoader: MoviesLoading
+        private let moviesLoader: MoviesLoading
     
     private var movies: [MostPopularMovie] = []
 
@@ -27,10 +25,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     // MARK: - Methods
 
-    /// A method to request all necessary data for the next question.
     func requestNextQuestion()  {
-
-        // 3rd way
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             

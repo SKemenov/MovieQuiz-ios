@@ -95,7 +95,6 @@ extension StatisticServiceImplementation: StatisticService {
             return bestGame
         }
         set {
-
             guard let data = try? encoder.encode(newValue) else {
                 print("Невозможно сохранить результат")
                 return
@@ -115,7 +114,7 @@ extension StatisticServiceImplementation: StatisticService {
         let currentBestGame = BestGame(correct: count, total: amount, date: date)
         
         if let previusBestGame = bestGame {
-            if currentBestGame > previusBestGame {
+            if currentBestGame >= previusBestGame {
                 bestGame = currentBestGame
             }
         } else {

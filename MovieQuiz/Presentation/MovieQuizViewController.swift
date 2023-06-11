@@ -1,7 +1,5 @@
 import UIKit
 
-
-/// Main viewController of MovieQuiz
 final class MovieQuizViewController: UIViewController {
     //     MARK: - Outlets
     
@@ -11,7 +9,6 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
-    
     
     
     //  MARK: - Properties
@@ -28,8 +25,7 @@ final class MovieQuizViewController: UIViewController {
     
     
     // MARK: - Lifecycle
-    //
-    //
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,10 +33,10 @@ final class MovieQuizViewController: UIViewController {
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MovieLoader())
         statisticService = StatisticServiceImplementation()
         
-        showLoadingIndicator(true)
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.startAnimating()
 
         questionFactory?.loadData()
-
         resetRound()
     }
     
@@ -60,22 +56,19 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Methods
 
     private func resetRound() {
-        // make a border for the first question the same as in the Firma protopype
+        // make a border's properties for the first question the same as in the Firma protopype
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
         
-        // reset variables
+        // reset score properties
         currentQuestionIndex = 0
         correctAnswers = 0
         
-        // try to request the first question
         questionFactory?.requestNextQuestion()
     }
     
-    /// A private method to convert QuizQuestion struct data into QuizStepViewModel's view model
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        // return image by the name or empty image as UIImage()
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -89,7 +82,6 @@ final class MovieQuizViewController: UIViewController {
         textLabel.text = step.question
     }
     
-    /// A private method to show the answer result
     private func showAnswerResult(isCorrect: Bool) {
         
         imageView.layer.borderWidth = 8
@@ -102,7 +94,6 @@ final class MovieQuizViewController: UIViewController {
         // wait 1 sec after that enable buttons and go next to run the closure
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) { [weak self] in
             guard let self else { return }
-            self.enableButtons(true)
             self.showNextQuestionOrResults()
         }
     }
@@ -113,23 +104,19 @@ final class MovieQuizViewController: UIViewController {
         noButton.isEnabled = state
     }
     
-    /// A private method which showing the next question or the result alert at the end
     private func showNextQuestionOrResults() {
-        
-        // if it's the final question show the result's alert, otherwise - go the next question
         if currentQuestionIndex == questionsAmount - 1 {
              showFinalResults()
         } else {
             currentQuestionIndex += 1
-            
-            // hide the border (width=0) around the image before showing the next question
             imageView.layer.borderColor = UIColor.clear.cgColor
+            imageView.image = UIImage() // clear movie's poster before loading the next one
+            loadingIndicator.startAnimating()
             
             questionFactory?.requestNextQuestion()
         }
     }
     
-    /// A private method to save final score and call an alert
     private func showFinalResults() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
         
@@ -144,7 +131,6 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter?.show(for: alertModel)
     }
     
-    /// A private method to prepare and make the final score message
     private func makeResultsMessage() -> String {
                 
         guard let statisticService = statisticService,
@@ -162,18 +148,8 @@ final class MovieQuizViewController: UIViewController {
         
         return resultMessage
     }
-    
-    private func showLoadingIndicator(_ status: Bool) {
-        loadingIndicator.isHidden = !status
-        if status {
-            loadingIndicator.startAnimating()
-        } else {
-            loadingIndicator.stopAnimating()
-        }
-    }
-    
+        
     private func showNetworkError(message: String) {
-        showLoadingIndicator(false)
         
         let alertModel = AlertModel(
             title: "Ошибка",
@@ -190,11 +166,10 @@ final class MovieQuizViewController: UIViewController {
 }
 
 // MARK: - Extensions
-// conform to Protocol QuestionFactoryDelegate
+
 extension MovieQuizViewController: QuestionFactoryDelegate {
     
     func didLoadDataFromServer() {
-        showLoadingIndicator(false)
         questionFactory?.requestNextQuestion()
     }
     
@@ -202,17 +177,16 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
         showNetworkError(message: error.localizedDescription)
     }
     
-    
-    /// A delegate method to receive question from the factory's delegate.
-    /// - Parameter question: `QuizQuestion` structure with the question or `nil`
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        
-        /// while receiving `nil` return without updating UI
         guard let question else { return }
+
         currentQuestion = question
         let viewModel = convert(model: question)
+
         // use async to show updated UI
         DispatchQueue.main.async { [weak self] in
+            self?.enableButtons(true)
+            self?.loadingIndicator.stopAnimating()
             self?.show(quiz: viewModel)
         }
     }
