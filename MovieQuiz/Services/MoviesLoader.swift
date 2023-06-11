@@ -12,7 +12,6 @@ protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
 
-/// A service to connecting to IMDb API and loading Top250Movies data into `MostPopularMovies`
 struct MovieLoader: MoviesLoading {
     private let networkClient = NetworkClient()
     private let imdbUrl = "https://imdb-api.com/en/API/Top250Movies/"
@@ -24,7 +23,6 @@ struct MovieLoader: MoviesLoading {
         }
         return url
     }
-    
 
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
@@ -42,6 +40,4 @@ struct MovieLoader: MoviesLoading {
             }
         }
     }
-    
-    
 }

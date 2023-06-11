@@ -8,14 +8,10 @@
 import Foundation
 
 // MARK: - Structs
-
-/// A structure to collect information for the 'AlertPresenter' and show the final alert with game's score.
-
 struct AlertModel {
     let title: String
     let text: String
     let buttonText: String
     let completion: () -> Void
-  
 }
 

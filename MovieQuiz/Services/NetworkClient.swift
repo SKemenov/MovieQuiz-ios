@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-/// `NetworkClient` is loading data from URL
 struct NetworkClient {
     
     private enum NetworkError: Error {

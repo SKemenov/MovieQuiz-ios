@@ -7,8 +7,6 @@
 
 import Foundation
 
-/// A structure to hold an information about the best game.
-
 struct BestGame: Codable {
     let correct: Int
     let total: Int

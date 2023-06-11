@@ -17,9 +17,7 @@ final class MovieQuizViewController: UIViewController {
     //  MARK: - Properties
     
     private var currentQuestionIndex: Int = 0
-    /// A variable with total amound of player's correct answers
     private var correctAnswers: Int = 0
-    /// A constant with total amound of questions for each round
     private let questionsAmount: Int = 10
 
     private var currentQuestion: QuizQuestion?
@@ -44,7 +42,6 @@ final class MovieQuizViewController: UIViewController {
         questionFactory?.loadData()
 
         resetRound()
-        
     }
     
     
@@ -62,8 +59,7 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - Methods
 
-    /// A method to reset the round (at the begining and before running the next round)
-    func resetRound() {
+    private func resetRound() {
         // make a border for the first question the same as in the Firma protopype
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0

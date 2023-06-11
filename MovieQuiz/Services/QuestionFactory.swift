@@ -13,7 +13,6 @@ import Foundation
 class QuestionFactory: QuestionFactoryProtocol {
     // MARK: - Constants & Variables
 
-    /// A delegate variable using to call a delegate from viewController. The best practice is to use `private` and `weak`.
     private weak var delegate: QuestionFactoryDelegate?
     
     private let moviesLoader: MoviesLoading
@@ -45,14 +44,27 @@ class QuestionFactory: QuestionFactoryProtocol {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             }
             catch {
-                print("Failed to load image from imageURL into imageData")
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.didFailToLoadData(with: error)
+                }
             }
 
-            let rating = Float(movie.imDbRating) ?? 0
+            let rating = Float(movie.rating) ?? 0
+            // set range for the text closer to the rating or to the limits (4...9)
+            let lessThanRating = rating < 4 ? 4 : Int(rating) - 2
+            let moreThanRating = rating > 7 ? 9 : Int(rating) + 2
+            let questionLevel = (lessThanRating...moreThanRating).randomElement() ?? 0
             
-            let questionLevel = (1...9).randomElement() ?? 0
-            let text = "Рейтинг этого фильма больше \(questionLevel)?"
-            let correctAnswer = rating > Float(questionLevel)
+            let text: String
+            let correctAnswer: Bool
+            
+            if Bool.random() {
+                text = "Рейтинг этого фильма больше \(questionLevel)?"
+                correctAnswer = rating > Float(questionLevel)
+            } else {
+                text = "Рейтинг этого фильма меньше \(questionLevel)?"
+                correctAnswer = rating < Float(questionLevel)
+            }
             
             let question = QuizQuestion(image: imageData,
                                         text: text,
@@ -60,14 +72,11 @@ class QuestionFactory: QuestionFactoryProtocol {
             
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
-            
         }
     }
 
-    /// A method to load json from IMDb API 
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
