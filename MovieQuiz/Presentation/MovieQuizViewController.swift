@@ -36,6 +36,14 @@ final class MovieQuizViewController: UIViewController {
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.startAnimating()
 
+		// Setup Labels  for UI elements for UI tests
+		imageView.accessibilityIdentifier = "Poster"
+		textLabel.accessibilityIdentifier = "Question"
+		counterLabel.accessibilityIdentifier = "Index"
+		yesButton.accessibilityIdentifier = "Yes"
+		noButton.accessibilityIdentifier = "No"
+		loadingIndicator.accessibilityIdentifier = "LoadingIndicator"
+
         questionFactory?.loadData()
         resetRound()
     }

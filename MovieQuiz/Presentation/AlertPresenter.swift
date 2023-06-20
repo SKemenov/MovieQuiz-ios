@@ -28,6 +28,9 @@ extension AlertPresenter: AlertPresenterProtocol {
             title: model.title,
             message: model.text,
             preferredStyle: .alert)
+
+		// set label for UI tests
+		alert.view.accessibilityIdentifier = "Alert"
         
         // init the button
         let action = UIAlertAction(
