@@ -16,7 +16,8 @@ final class MoviesLoaderTests: XCTestCase {
 		let loader = MovieLoader(networkClient: stubNetworkClient)
 
         //When
-        let expectation = expectation(description: "Loading expextation") // using this for waiting
+//        let expectation = expectation(description: "Loading expextation") // using this for waiting
+		let expectation = XCTestExpectation(description: "Loading expextation") // for multiple tests better to use XCTestExpectation
 
         loader.loadMovies { result in
             // Then
@@ -28,7 +29,8 @@ final class MoviesLoaderTests: XCTestCase {
                     XCTFail("Unexpected failure")
             }
         }
-        waitForExpectations(timeout: 2) // need to wait this time (in secs)
+//        waitForExpectations(timeout: 2) // need to wait this time (in secs)
+		wait(for: [expectation], timeout: 2) // use with XCTestExpectation
     }
 
     func testFailureLoading() throws {
@@ -37,7 +39,8 @@ final class MoviesLoaderTests: XCTestCase {
 		let loader = MovieLoader(networkClient: stubNetworkClient)
 
         // When
-		let expectation = expectation(description: "Loading Failure expextation")
+//		let expectation = expectation(description: "Loading Failure expextation")
+		let expectation = XCTestExpectation(description: "Loading Failure expextation")
 
 		loader.loadMovies { result in
 			// Then
@@ -49,6 +52,7 @@ final class MoviesLoaderTests: XCTestCase {
 					XCTFail("Unexpected failure")
 			}
 		}
-		waitForExpectations(timeout: 2)
+//		waitForExpectations(timeout: 2)
+		wait(for: [expectation], timeout: 2)
     }
 }
