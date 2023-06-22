@@ -14,7 +14,9 @@ protocol MoviesLoading {
 
 struct MovieLoader: MoviesLoading {
     private let networkClient: NetworkRouting
-    private let imdbUrl = "https://imdb-api.com/en/API/Top250Movies/"
+	// use most popular or top250 movie's IMDb API
+	private let imdbUrl = "https://imdb-api.com/en/API/"
+	private let imdbApi = Bool.random() ? "MostPopularMovies/" : "Top250Movies/"
     private let imdbToken = "k_gbe4ep0b"
     
     init(networkClient: NetworkRouting = NetworkClient()) {
@@ -22,7 +24,7 @@ struct MovieLoader: MoviesLoading {
     }
     
     private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: imdbUrl + imdbToken) else {
+        guard let url = URL(string: imdbUrl + imdbApi + imdbToken) else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url

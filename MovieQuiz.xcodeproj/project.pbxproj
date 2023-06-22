@@ -36,6 +36,7 @@
 		E99B05F82A3CDCBF00C11C7D /* StubNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99B05F72A3CDCBF00C11C7D /* StubNetworkClient.swift */; };
 		E9BB98712A25C5810019A3A2 /* BestGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB98702A25C5810019A3A2 /* BestGame.swift */; };
 		E9C80B962A141ADF0051D489 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C80B952A141ADF0051D489 /* QuestionFactoryDelegate.swift */; };
+		E9C8CE182A44D07E0037F8BC /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		E99B05F72A3CDCBF00C11C7D /* StubNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubNetworkClient.swift; sourceTree = "<group>"; };
 		E9BB98702A25C5810019A3A2 /* BestGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestGame.swift; sourceTree = "<group>"; };
 		E9C80B952A141ADF0051D489 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
+		E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				E950816B2A15F321007F4C67 /* AlertPresenter.swift */,
+				E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				E93890642A112E7100952563 /* QuizResultsViewModel.swift in Sources */,
 				E93890622A112E0B00952563 /* QuizStepViewModel.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
+				E9C8CE182A44D07E0037F8BC /* MovieQuizPresenter.swift in Sources */,
 				E938905D2A10F42600952563 /* QuestionFactory.swift in Sources */,
 				E9BB98712A25C5810019A3A2 /* BestGame.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,

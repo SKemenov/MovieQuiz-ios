@@ -54,7 +54,7 @@ class QuestionFactory: QuestionFactoryProtocol {
     }
     
     private func makeQuestionWith(rating: String, imageData: Data) -> QuizQuestion {
-        let rating = Float(rating) ?? 0
+        let rating = Float(rating) ?? 4
         // set range for the text closer to the rating or to the limits (4...9)
         let lessThanRating = rating < 4 ? 4 : Int(rating) - 2
         let moreThanRating = rating > 7 ? 9 : Int(rating) + 2
