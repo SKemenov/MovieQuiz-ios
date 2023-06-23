@@ -6,9 +6,10 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
 	func prepareViewAfterAnswer(isCorrectAnswer: Bool)
 	func showFinalResults()
 	func showNetworkError(message: String)
+	func enableButtons(_ state: Bool)
 }
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
 	//     MARK: - Outlets
 
 	@IBOutlet private weak var imageView: UIImageView!
@@ -74,10 +75,11 @@ final class MovieQuizViewController: UIViewController {
 	}
 
 	func prepareViewForNextQuestion() {
-		loadingIndicator.startAnimating()
 		imageView.layer.borderColor = UIColor.clear.cgColor
 		imageView.image = UIImage()
 		textLabel.text = ""
+
+		loadingIndicator.startAnimating()
 	}
 
 	func prepareViewAfterAnswer(isCorrectAnswer: Bool) {
@@ -86,7 +88,7 @@ final class MovieQuizViewController: UIViewController {
 		enableButtons(false)
 	}
 
-	private func enableButtons(_ state: Bool) {
+	 func enableButtons(_ state: Bool) {
 		yesButton.isEnabled = state
 		noButton.isEnabled = state
 	}

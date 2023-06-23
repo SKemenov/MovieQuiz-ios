@@ -18,7 +18,7 @@ final class MovieQuizPresenter {
 	private var questionFactory: QuestionFactoryProtocol?
 	private var statisticService: StatisticService?
 	private var currentQuestion: QuizQuestion?
-	private weak var viewController: MovieQuizViewController?
+	private weak var viewController: MovieQuizViewControllerProtocol?
 
 	// MARK: - Init
 	
