@@ -21,8 +21,7 @@ final class MovieQuizPresenter {
 	private weak var viewController: MovieQuizViewControllerProtocol?
 
 	// MARK: - Init
-	
-	init(viewController: MovieQuizViewController?) {
+	init(viewController: MovieQuizViewControllerProtocol?) {
 		self.viewController = viewController
 		questionFactory = QuestionFactory(delegate: self, moviesLoader: MovieLoader())
 		statisticService = StatisticServiceImplementation()

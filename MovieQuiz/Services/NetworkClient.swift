@@ -7,9 +7,13 @@
 
 import Foundation
 
+// MARK: - Protocol
+
 protocol NetworkRouting {
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
 }
+
+// MARK: - Structure
 
 struct NetworkClient: NetworkRouting {
     

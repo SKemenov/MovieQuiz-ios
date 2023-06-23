@@ -9,7 +9,7 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
 	func enableButtons(_ state: Bool)
 }
 
-final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
+final class MovieQuizViewController: UIViewController {
 	//     MARK: - Outlets
 
 	@IBOutlet private weak var imageView: UIImageView!
@@ -19,12 +19,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 	@IBOutlet private weak var noButton: UIButton!
 	@IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
 
-
 	//  MARK: - Properties
 
 	private var alertPresenter: AlertPresenterProtocol?
 	private var presenter: MovieQuizPresenter!
-
 
 	// MARK: - Lifecycle
 
@@ -51,7 +49,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 
 		presenter.restartGame()
 	}
-
 
 	// MARK: - Actions
 
@@ -121,3 +118,5 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
 		}
 	}
 }
+
+extension MovieQuizViewController: MovieQuizViewControllerProtocol { }

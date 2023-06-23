@@ -7,6 +7,12 @@
 
 import UIKit
 
+//  MARK: - Protocol
+
+protocol AlertPresenterProtocol: AnyObject {
+	func show(for model: AlertModel)
+}
+
 final class AlertPresenter {
     //  MARK: - Properties
     
