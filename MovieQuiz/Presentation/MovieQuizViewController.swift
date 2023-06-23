@@ -1,5 +1,13 @@
 import UIKit
 
+protocol MovieQuizViewControllerProtocol: AnyObject {
+	func show(quiz step: QuizStepViewModel)
+	func prepareViewForNextQuestion()
+	func prepareViewAfterAnswer(isCorrectAnswer: Bool)
+	func showFinalResults()
+	func showNetworkError(message: String)
+}
+
 final class MovieQuizViewController: UIViewController {
 	//     MARK: - Outlets
 
@@ -13,14 +21,8 @@ final class MovieQuizViewController: UIViewController {
 
 	//  MARK: - Properties
 
-	private var correctAnswers: Int = 0
-
-	private var currentQuestion: QuizQuestion?
-	private var questionFactory: QuestionFactoryProtocol?
 	private var alertPresenter: AlertPresenterProtocol?
-	private var statisticService: StatisticService?
-
-	private let presenter = MovieQuizPresenter()
+	private var presenter: MovieQuizPresenter!
 
 
 	// MARK: - Lifecycle
@@ -28,10 +30,8 @@ final class MovieQuizViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		presenter.viewController = self
 		alertPresenter = AlertPresenter(viewController: self)
-		questionFactory = QuestionFactory(delegate: self, moviesLoader: MovieLoader())
-		statisticService = StatisticServiceImplementation()
+		presenter = MovieQuizPresenter(viewController: self)
 
 		loadingIndicator.hidesWhenStopped = true
 		loadingIndicator.startAnimating()
@@ -44,114 +44,66 @@ final class MovieQuizViewController: UIViewController {
 		noButton.accessibilityIdentifier = "No"
 		loadingIndicator.accessibilityIdentifier = "LoadingIndicator"
 
-		questionFactory?.loadData()
-		resetRound()
+		imageView.layer.masksToBounds = true
+		imageView.layer.borderWidth = 0
+		imageView.layer.cornerRadius = 20
+
+		presenter.restartGame()
 	}
 
 
 	// MARK: - Actions
 
 	@IBAction private func yesButtonClicked(_ sender: UIButton) {
-		presenter.currentQuestion = currentQuestion
-		presenter.yesButtonClicked()
+		presenter.didAnswer(isYes: true)
 	}
 
 	@IBAction private func noButtonClicked(_ sender: UIButton) {
-		presenter.currentQuestion = currentQuestion
-		presenter.noButtonClicked()
+		presenter.didAnswer(isYes: false)
 	}
 
 	// MARK: - Methods
 
-	private func resetRound() {
-		// make a border's properties for the first question the same as in the Firma protopype
-		imageView.layer.masksToBounds = true
-		imageView.layer.borderWidth = 0
-		imageView.layer.cornerRadius = 20
-
-		// reset score properties
-		presenter.resetQuestionIndex()
-		correctAnswers = 0
-
-		questionFactory?.requestNextQuestion()
-	}
-
-	/// A private method  to perpesent data from the question viewModel into UI elements
-	private func show(quiz step: QuizStepViewModel) {
+	func show(quiz step: QuizStepViewModel) {
 		counterLabel.text = step.questionNumber
 		imageView.image = step.image
 		textLabel.text = step.question
+		
+		loadingIndicator.stopAnimating()
+		enableButtons(true)
 	}
 
-	func showAnswerResult(isCorrect: Bool) {
+	func prepareViewForNextQuestion() {
+		loadingIndicator.startAnimating()
+		imageView.layer.borderColor = UIColor.clear.cgColor
+		imageView.image = UIImage()
+		textLabel.text = ""
+	}
+
+	func prepareViewAfterAnswer(isCorrectAnswer: Bool) {
 		imageView.layer.borderWidth = 8
-		imageView.layer.borderColor = ( isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
-
+		imageView.layer.borderColor = ( isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
 		enableButtons(false)
-
-		correctAnswers += ( isCorrect ? 1 : 0 )
-
-		// wait 1 sec after that enable buttons and go next to run the closure
-		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 ) { [weak self] in
-			guard let self else { return }
-			self.showNextQuestionOrResults()
-		}
 	}
 
-	/// A private method to enable (or disable) Yes and No buttons
 	private func enableButtons(_ state: Bool) {
 		yesButton.isEnabled = state
 		noButton.isEnabled = state
 	}
 
-	private func showNextQuestionOrResults() {
-		if presenter.isLastQuestion() {
-			showFinalResults()
-		} else {
-			presenter.swithToNextQuestion()
-
-			// prepare views before loading the next movie
-			loadingIndicator.startAnimating()
-			imageView.layer.borderColor = UIColor.clear.cgColor
-			imageView.image = UIImage()
-			textLabel.text = ""
-
-			questionFactory?.requestNextQuestion()
-		}
-	}
-
-	private func showFinalResults() {
-		statisticService?.store(correct: correctAnswers, total: presenter.questionsAmount)
-
+	func showFinalResults() {
 		let alertModel = AlertModel(
 			title: "Этот раунд окончен!",
-			text: makeResultsMessage(),
+			text: presenter.makeResultsMessage(),
 			buttonText: "Сыграть ещё раз",
 			completion: { [weak self ] in
-				self?.resetRound()
+				self?.presenter.restartGame()
 			}
 		)
 		alertPresenter?.show(for: alertModel)
 	}
 
-	private func makeResultsMessage() -> String {
-		guard let statisticService = statisticService,
-			  let bestGame = statisticService.bestGame else {
-			assertionFailure("error message")
-			return ""
-		}
-
-		let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)"
-		let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-		let bestGameLine = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
-		let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
-		let averageAccuracyLine = "Средняя точность: \(accuracy)%"
-		let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
-
-		return resultMessage
-	}
-
-	private func showNetworkError(message: String) {
+	func showNetworkError(message: String) {
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
 			let alertModel = AlertModel(
@@ -160,37 +112,10 @@ final class MovieQuizViewController: UIViewController {
 				buttonText: "Попробовать ещё раз",
 				completion: { [weak self ] in
 					guard let self else { return }
-					self.questionFactory?.loadData()
+					self.presenter.restartGame()
 				}
 			)
 			self.alertPresenter?.show(for: alertModel)
 		}
 	}
 }
-
-// MARK: - Extensions
-
-extension MovieQuizViewController: QuestionFactoryDelegate {
-	func didLoadDataFromServer() {
-		questionFactory?.requestNextQuestion()
-	}
-
-	func didFailToLoadData(with error: Error) {
-		showNetworkError(message: error.localizedDescription)
-	}
-
-	func didReceiveNextQuestion(question: QuizQuestion?) {
-		guard let question else { return }
-		currentQuestion = question
-		let viewModel = presenter.convert(model: question)
-
-		// use async to show updated UI
-		DispatchQueue.main.async { [weak self] in
-			guard let self else { return }
-			self.enableButtons(true)
-			self.loadingIndicator.stopAnimating()
-			self.show(quiz: viewModel)
-		}
-	}
-}
-
