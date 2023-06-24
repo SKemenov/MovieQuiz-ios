@@ -27,10 +27,10 @@ final class MovieQuizPresenter {
 		self.viewController = viewController
 		questionFactory = QuestionFactory(delegate: self, moviesLoader: MovieLoader())
 		statisticService = StatisticServiceImplementation()
-		questionFactory?.loadData()
+//		questionFactory?.loadData()
 	}
 
-	// MARK: - Methods
+	// MARK: - Public Methods
 	
 	func clickedButton(isYes: Bool) {
 		guard let currentQuestion else { return }
@@ -38,32 +38,41 @@ final class MovieQuizPresenter {
 		proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
 	}
 	
-	private func isLastQuestion() -> Bool {
-		currentQuestionIndex == questionsAmount - 1
-	}
-	
 	func restartGame() {
 		currentQuestionIndex = 0
 		correctAnswers = 0
-		viewController?.showLoadingIndicator()
-		viewController?.prepareViewForNextQuestion()
-		questionFactory?.requestNextQuestion()
+		questionFactory?.loadData()
+		prepareForNextQuestion()
 	}
-	
+
+	func makeQuizResults() -> QuizResultsViewModel {
+		QuizResultsViewModel(title: "Этот раунд окончен!", text: makeResultsMessage(), buttonText: "Сыграть ещё раз")
+	}
+
+	// MARK: - Private Methods
+
+	private func isLastQuestion() -> Bool {
+		currentQuestionIndex == questionsAmount - 1
+	}
+
 	private func switchToNextQuestion() {
 		currentQuestionIndex += 1
+		prepareForNextQuestion()
+	}
+
+	private func prepareForNextQuestion() {
 		viewController?.showLoadingIndicator()
 		viewController?.prepareViewForNextQuestion()
 		questionFactory?.requestNextQuestion()
 	}
 	
-	func didAnswer(isCorrectAnswer: Bool) {
+	private func didAnswer(isCorrectAnswer: Bool) {
 		if isCorrectAnswer {
 			correctAnswers += 1
 		}
 	}
 	
-	func convert(model: QuizQuestion) -> QuizStepViewModel {
+	private func convert(model: QuizQuestion) -> QuizStepViewModel {
 		return QuizStepViewModel(
 			image: UIImage(data: model.image) ?? UIImage(),
 			question: model.text,
@@ -90,10 +99,6 @@ final class MovieQuizPresenter {
 		}
 	}
 
-	func makeQuizResults() -> QuizResultsViewModel {
-		QuizResultsViewModel(title: "Этот раунд окончен!", text: makeResultsMessage(), buttonText: "Сыграть ещё раз")
-	}
-
 	private func makeResultsMessage() -> String {
 		guard let statisticService = statisticService,
 			  let bestGame = statisticService.bestGame else {
@@ -113,6 +118,8 @@ final class MovieQuizPresenter {
 		return resultMessage
 	}
 }
+
+// MARK: - Delegate's Methods
 
 extension MovieQuizPresenter: QuestionFactoryDelegate {
 	func didLoadDataFromServer() {

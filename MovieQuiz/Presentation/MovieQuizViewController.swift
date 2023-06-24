@@ -26,6 +26,10 @@ final class MovieQuizViewController: UIViewController {
 	private var alertPresenter: AlertPresenterProtocol?
 	private var presenter: MovieQuizPresenter!
 
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	} // Made status bar white
+
 	// MARK: - Lifecycle
 
 	override func viewDidLoad() {
