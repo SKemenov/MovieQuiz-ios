@@ -20,6 +20,8 @@ final class MovieQuizPresenter {
 	private var currentQuestion: QuizQuestion?
 	private weak var viewController: MovieQuizViewControllerProtocol?
 
+	private var quizResults: QuizResultsViewModel?
+
 	// MARK: - Init
 	init(viewController: MovieQuizViewControllerProtocol?) {
 		self.viewController = viewController
@@ -30,25 +32,27 @@ final class MovieQuizPresenter {
 
 	// MARK: - Methods
 	
-	func didAnswer(isYes: Bool) {
+	func clickedButton(isYes: Bool) {
 		guard let currentQuestion else { return }
 		let givenAnswer = isYes
 		proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
 	}
 	
-	func isLastQuestion() -> Bool {
+	private func isLastQuestion() -> Bool {
 		currentQuestionIndex == questionsAmount - 1
 	}
 	
 	func restartGame() {
 		currentQuestionIndex = 0
 		correctAnswers = 0
+		viewController?.showLoadingIndicator()
 		viewController?.prepareViewForNextQuestion()
 		questionFactory?.requestNextQuestion()
 	}
 	
-	func switchToNextQuestion() {
+	private func switchToNextQuestion() {
 		currentQuestionIndex += 1
+		viewController?.showLoadingIndicator()
 		viewController?.prepareViewForNextQuestion()
 		questionFactory?.requestNextQuestion()
 	}
@@ -66,8 +70,9 @@ final class MovieQuizPresenter {
 			questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
 	}
 
-	func proceedWithAnswer(isCorrect: Bool) {
+	private func proceedWithAnswer(isCorrect: Bool) {
 		viewController?.prepareViewAfterAnswer(isCorrectAnswer: isCorrect)
+		viewController?.enableButtons(false)
 		didAnswer(isCorrectAnswer: isCorrect)
 
 		// wait 1 sec after that enable buttons and go next to run the closure
@@ -77,15 +82,19 @@ final class MovieQuizPresenter {
 		}
 	}
 
-	func proceedToNextQuestionOrResults() {
+	private func proceedToNextQuestionOrResults() {
 		if isLastQuestion() {
 			viewController?.showFinalResults()
 		} else {
-			self.switchToNextQuestion()
+			switchToNextQuestion()
 		}
 	}
 
-	func makeResultsMessage() -> String {
+	func makeQuizResults() -> QuizResultsViewModel {
+		QuizResultsViewModel(title: "Этот раунд окончен!", text: makeResultsMessage(), buttonText: "Сыграть ещё раз")
+	}
+
+	private func makeResultsMessage() -> String {
 		guard let statisticService = statisticService,
 			  let bestGame = statisticService.bestGame else {
 			assertionFailure("error message")
@@ -122,6 +131,8 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
 		// use async to show updated UI
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
+			viewController?.hideLoadingIndicator()
+			viewController?.enableButtons(true)
 			viewController?.show(quiz: viewModel)
 		}
 	}

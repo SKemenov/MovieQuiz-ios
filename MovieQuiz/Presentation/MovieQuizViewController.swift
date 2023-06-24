@@ -7,6 +7,8 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
 	func showFinalResults()
 	func showNetworkError(message: String)
 	func enableButtons(_ state: Bool)
+	func showLoadingIndicator()
+	func hideLoadingIndicator()
 }
 
 final class MovieQuizViewController: UIViewController {
@@ -33,7 +35,7 @@ final class MovieQuizViewController: UIViewController {
 		presenter = MovieQuizPresenter(viewController: self)
 
 		loadingIndicator.hidesWhenStopped = true
-		loadingIndicator.startAnimating()
+//		loadingIndicator.startAnimating()
 
 		// Setup Labels  for UI elements for UI tests
 		imageView.accessibilityIdentifier = "Poster"
@@ -53,36 +55,44 @@ final class MovieQuizViewController: UIViewController {
 	// MARK: - Actions
 
 	@IBAction private func yesButtonClicked(_ sender: UIButton) {
-		presenter.didAnswer(isYes: true)
+		presenter.clickedButton(isYes: true)
 	}
 
 	@IBAction private func noButtonClicked(_ sender: UIButton) {
-		presenter.didAnswer(isYes: false)
+		presenter.clickedButton(isYes: false)
 	}
 
 	// MARK: - Methods
+
+	func hideLoadingIndicator() {
+		loadingIndicator.stopAnimating()
+	}
+
+	func  showLoadingIndicator() {
+		loadingIndicator.startAnimating()
+	}
 
 	func show(quiz step: QuizStepViewModel) {
 		counterLabel.text = step.questionNumber
 		imageView.image = step.image
 		textLabel.text = step.question
-		
-		loadingIndicator.stopAnimating()
-		enableButtons(true)
+//
+//		loadingIndicator.stopAnimating()
+//		enableButtons(true)
 	}
 
 	func prepareViewForNextQuestion() {
 		imageView.layer.borderColor = UIColor.clear.cgColor
 		imageView.image = UIImage()
 		textLabel.text = ""
-
-		loadingIndicator.startAnimating()
+//
+//		loadingIndicator.startAnimating()
 	}
 
 	func prepareViewAfterAnswer(isCorrectAnswer: Bool) {
 		imageView.layer.borderWidth = 8
 		imageView.layer.borderColor = ( isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
-		enableButtons(false)
+//		enableButtons(false)
 	}
 
 	 func enableButtons(_ state: Bool) {
@@ -91,10 +101,11 @@ final class MovieQuizViewController: UIViewController {
 	}
 
 	func showFinalResults() {
+		let result = presenter.makeQuizResults()
 		let alertModel = AlertModel(
-			title: "Этот раунд окончен!",
-			text: presenter.makeResultsMessage(),
-			buttonText: "Сыграть ещё раз",
+			title: result.title,
+			text: result.text,
+			buttonText: result.buttonText,
 			completion: { [weak self ] in
 				self?.presenter.restartGame()
 			}
