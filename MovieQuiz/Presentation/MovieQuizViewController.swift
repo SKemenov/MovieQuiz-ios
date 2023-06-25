@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController {
 		imageView.layer.borderWidth = 0
 		imageView.layer.cornerRadius = 20
 
-		presenter.restartGame()
+		presenter.reloadGame()
 	}
 
 	// MARK: - Actions
