@@ -9,20 +9,17 @@ import Foundation
 
 // MARK: - Protocol
 
-/// A protocol to CDUR the information about game score
 protocol StatisticService {
     
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
     var bestGame: BestGame? { get }
     
-    /// A method to collect and store the game score, and if it needs update info about the best game
     func store(correct count: Int, total amount: Int)
 }
 
 // MARK: - Class
 
-/// A classe to work with the information about game score
 final class StatisticServiceImplementation {
 
     // This enum used to naming space in User Defaults to store our statistic
@@ -52,18 +49,15 @@ final class StatisticServiceImplementation {
 
 }
     
-    // conform class to protocol
 extension StatisticServiceImplementation: StatisticService {
     
     // MARK: - Extention's Properties
 
     var gamesCount: Int {
         get {
-            // here using userDefaults to read Int value from space, named gamesCount
             userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
-            //here using 
             userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
@@ -101,7 +95,6 @@ extension StatisticServiceImplementation: StatisticService {
             return bestGame
         }
         set {
-
             guard let data = try? encoder.encode(newValue) else {
                 print("Невозможно сохранить результат")
                 return
@@ -121,7 +114,7 @@ extension StatisticServiceImplementation: StatisticService {
         let currentBestGame = BestGame(correct: count, total: amount, date: date)
         
         if let previusBestGame = bestGame {
-            if currentBestGame > previusBestGame {
+            if currentBestGame >= previusBestGame {
                 bestGame = currentBestGame
             }
         } else {

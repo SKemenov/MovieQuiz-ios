@@ -7,9 +7,15 @@
 
 import Foundation
 
+// MARK: - Protocol
 
-/// `NetworkClient` is loading data from URL
-struct NetworkClient {
+protocol NetworkRouting {
+    func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
+}
+
+// MARK: - Structure
+
+struct NetworkClient: NetworkRouting {
     
     private enum NetworkError: Error {
         case codeError

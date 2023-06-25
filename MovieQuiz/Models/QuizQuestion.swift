@@ -8,11 +8,8 @@
 import Foundation
 
 // MARK: - Structs
-
-/// A structure to hold an information about the question.
 struct QuizQuestion {
     let image: Data
     let text: String
     let correctAnswer: Bool
-    
 }

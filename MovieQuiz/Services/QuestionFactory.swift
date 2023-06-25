@@ -7,79 +7,93 @@
 
 import Foundation
 
+//  MARK: - Protocol
+
+protocol QuestionFactoryProtocol {
+	func requestNextQuestion()
+	func loadData()
+}
+
 //  MARK: - Class
 
-/// A `QuestionFactory` class is a Service (or a Factory)  to generate, load, store all information about questions.
 class QuestionFactory: QuestionFactoryProtocol {
-    // MARK: - Constants & Variables
+	// MARK: - Constants & Variables
 
-    /// A delegate variable using to call a delegate from viewController. The best practice is to use `private` and `weak`.
-    private weak var delegate: QuestionFactoryDelegate?
-    
-    private let moviesLoader: MoviesLoading
-    
-    private var movies: [MostPopularMovie] = []
+	private weak var delegate: QuestionFactoryDelegate?
+	private let moviesLoader: MoviesLoading
+	private var movies: [MostPopularMovie] = []
 
-    // MARK: - init
-    init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoading) {
-        self.delegate = delegate
-        self.moviesLoader = moviesLoader
-    }
-    
-    // MARK: - Methods
+	// MARK: - init
+	init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoading) {
+		self.delegate = delegate
+		self.moviesLoader = moviesLoader
+	}
 
-    /// A method to request all necessary data for the next question.
-    func requestNextQuestion()  {
+	// MARK: - Methods
 
-        // 3rd way
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            
-            guard let movie = movies.randomElement() else {
-                //assertionFailure("question is empty")
-                return
-            }
-            
-            var imageData = Data()
-            do {
-                imageData = try Data(contentsOf: movie.resizedImageURL)
-            }
-            catch {
-                print("Failed to load image from imageURL into imageData")
-            }
+	func requestNextQuestion()  {
+		DispatchQueue.global().async { [weak self] in
+			guard let self = self else { return }
 
-            let rating = Float(movie.imDbRating) ?? 0
-            
-            let questionLevel = (1...9).randomElement() ?? 0
-            let text = "Рейтинг этого фильма больше \(questionLevel)?"
-            let correctAnswer = rating > Float(questionLevel)
-            
-            let question = QuizQuestion(image: imageData,
-                                        text: text,
-                                        correctAnswer: correctAnswer)
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                
-                self.delegate?.didReceiveNextQuestion(question: question)
-            }
-            
-        }
-    }
+			guard let movie = movies.randomElement() else {
+				return
+			}
 
-    /// A method to load json from IMDb API 
-    func loadData() {
-        moviesLoader.loadMovies { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                    case .success(let mostPopularMovies):
-                        self.movies = mostPopularMovies.items
-                        self.delegate?.didLoadDataFromServer()
-                    case .failure(let error):
-                        self.delegate?.didFailToLoadData(with: error)
-                }
-            }
-        }
-    }
+			var imageData = Data()
+			do {
+				imageData = try Data(contentsOf: movie.resizedImageURL)
+			}
+			catch {
+				DispatchQueue.main.async { [weak self] in
+					self?.delegate?.didFailToLoadData(with: error)
+				}
+			}
+
+			let question = makeQuestionWith(rating: movie.rating, imageData: imageData)
+
+			DispatchQueue.main.async { [weak self] in
+				guard let self else { return }
+				self.delegate?.didReceiveNextQuestion(question: question)
+			}
+		}
+	}
+
+	private func makeQuestionWith(rating: String, imageData: Data) -> QuizQuestion {
+		let rating = Float(rating) ?? 4
+		// set range for the text closer to the rating or to the limits (4...9)
+		let lessThanRating = rating < 4 ? 4 : Int(rating) - 2
+		let moreThanRating = rating > 7 ? 9 : Int(rating) + 2
+		let ratingLevel = (lessThanRating...moreThanRating).randomElement() ?? 0
+
+		let text: String
+		let correctAnswer: Bool
+
+		if Bool.random() {
+			text = "Рейтинг этого фильма больше \(ratingLevel)?"
+			correctAnswer = rating > Float(ratingLevel)
+		} else {
+			text = "Рейтинг этого фильма меньше \(ratingLevel)?"
+			correctAnswer = rating < Float(ratingLevel)
+		}
+
+		let question = QuizQuestion(image: imageData,
+									text: text,
+									correctAnswer: correctAnswer)
+		return question
+	}
+
+	func loadData() {
+		moviesLoader.loadMovies { [weak self] result in
+			DispatchQueue.main.async {
+				guard let self = self else { return }
+				switch result {
+					case .success(let mostPopularMovies):
+						self.movies = mostPopularMovies.items
+						self.delegate?.didLoadDataFromServer()
+					case .failure(let error):
+						self.delegate?.didFailToLoadData(with: error)
+				}
+			}
+		}
+	}
 }

@@ -7,24 +7,31 @@
 
 import Foundation
 
+// MARK: - Protocol
 
 protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
 
-/// A service to connecting to IMDb API and loading Top250Movies data into `MostPopularMovies`
+// MARK: - Structure
+
 struct MovieLoader: MoviesLoading {
-    private let networkClient = NetworkClient()
-    private let imdbUrl = "https://imdb-api.com/en/API/Top250Movies/"
+    private let networkClient: NetworkRouting
+	// use most popular or top250 movie's IMDb API
+	private let imdbUrl = "https://imdb-api.com/en/API/"
+	private let imdbApi = Bool.random() ? "MostPopularMovies/" : "Top250Movies/"
     private let imdbToken = "k_gbe4ep0b"
     
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
+    
     private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: imdbUrl + imdbToken) else {
+        guard let url = URL(string: imdbUrl + imdbApi + imdbToken) else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url
     }
-    
 
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
         networkClient.fetch(url: mostPopularMoviesUrl) { result in
@@ -42,6 +49,4 @@ struct MovieLoader: MoviesLoading {
             }
         }
     }
-    
-    
 }

@@ -11,12 +11,8 @@ import Foundation
 import UIKit.UIImage
 
 // MARK: - Structs
-
-/// A structure to hold an information for the `questionShowed` state of the state machine.
-
 struct QuizStepViewModel {
     let image: UIImage
     let question: String
     let questionNumber: String
-    
 }
