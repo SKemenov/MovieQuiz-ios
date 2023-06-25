@@ -39,7 +39,6 @@ final class MovieQuizViewController: UIViewController {
 		presenter = MovieQuizPresenter(viewController: self)
 
 		loadingIndicator.hidesWhenStopped = true
-//		loadingIndicator.startAnimating()
 
 		// Setup Labels  for UI elements for UI tests
 		imageView.accessibilityIdentifier = "Poster"
@@ -80,23 +79,17 @@ final class MovieQuizViewController: UIViewController {
 		counterLabel.text = step.questionNumber
 		imageView.image = step.image
 		textLabel.text = step.question
-//
-//		loadingIndicator.stopAnimating()
-//		enableButtons(true)
 	}
 
 	func prepareViewForNextQuestion() {
 		imageView.layer.borderColor = UIColor.clear.cgColor
 		imageView.image = UIImage()
 		textLabel.text = ""
-//
-//		loadingIndicator.startAnimating()
 	}
 
 	func prepareViewAfterAnswer(isCorrectAnswer: Bool) {
 		imageView.layer.borderWidth = 8
 		imageView.layer.borderColor = ( isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor )
-//		enableButtons(false)
 	}
 
 	 func enableButtons(_ state: Bool) {
@@ -126,7 +119,7 @@ final class MovieQuizViewController: UIViewController {
 				buttonText: "Попробовать ещё раз",
 				completion: { [weak self ] in
 					guard let self else { return }
-					self.presenter.restartGame()
+					self.presenter.reloadGame()
 				}
 			)
 			self.alertPresenter?.show(for: alertModel)

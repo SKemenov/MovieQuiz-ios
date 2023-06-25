@@ -18,16 +18,14 @@ final class MovieQuizPresenter {
 	private var questionFactory: QuestionFactoryProtocol?
 	private var statisticService: StatisticService?
 	private var currentQuestion: QuizQuestion?
-	private weak var viewController: MovieQuizViewControllerProtocol?
-
 	private var quizResults: QuizResultsViewModel?
+	private weak var viewController: MovieQuizViewControllerProtocol?
 
 	// MARK: - Init
 	init(viewController: MovieQuizViewControllerProtocol?) {
 		self.viewController = viewController
 		questionFactory = QuestionFactory(delegate: self, moviesLoader: MovieLoader())
 		statisticService = StatisticServiceImplementation()
-//		questionFactory?.loadData()
 	}
 
 	// MARK: - Public Methods
@@ -41,12 +39,24 @@ final class MovieQuizPresenter {
 	func restartGame() {
 		currentQuestionIndex = 0
 		correctAnswers = 0
-		questionFactory?.loadData()
 		prepareForNextQuestion()
+	}
+
+	func reloadGame() {
+		questionFactory?.loadData()
+		restartGame()
 	}
 
 	func makeQuizResults() -> QuizResultsViewModel {
 		QuizResultsViewModel(title: "Этот раунд окончен!", text: makeResultsMessage(), buttonText: "Сыграть ещё раз")
+	}
+
+	// Have to be non-private for unit tests
+	func convert(model: QuizQuestion) -> QuizStepViewModel {
+		return QuizStepViewModel(
+			image: UIImage(data: model.image) ?? UIImage(),
+			question: model.text,
+			questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
 	}
 
 	// MARK: - Private Methods
@@ -72,13 +82,6 @@ final class MovieQuizPresenter {
 		}
 	}
 	
-	private func convert(model: QuizQuestion) -> QuizStepViewModel {
-		return QuizStepViewModel(
-			image: UIImage(data: model.image) ?? UIImage(),
-			question: model.text,
-			questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-	}
-
 	private func proceedWithAnswer(isCorrect: Bool) {
 		viewController?.prepareViewAfterAnswer(isCorrectAnswer: isCorrect)
 		viewController?.enableButtons(false)
@@ -93,10 +96,16 @@ final class MovieQuizPresenter {
 
 	private func proceedToNextQuestionOrResults() {
 		if isLastQuestion() {
+			storeResults()
 			viewController?.showFinalResults()
 		} else {
 			switchToNextQuestion()
 		}
+	}
+
+	private func storeResults() {
+		guard let statisticService else { return }
+		statisticService.store(correct: correctAnswers, total: questionsAmount)
 	}
 
 	private func makeResultsMessage() -> String {
@@ -105,16 +114,12 @@ final class MovieQuizPresenter {
 			assertionFailure("error message")
 			return ""
 		}
-		
-		statisticService.store(correct: correctAnswers, total: questionsAmount)
-
 		let currentGameResultLine = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
 		let totalPlaysCountLine = "Количество сыгранных квизов: \(statisticService.gamesCount)"
 		let bestGameLine = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
 		let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
 		let averageAccuracyLine = "Средняя точность: \(accuracy)%"
 		let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
-		
 		return resultMessage
 	}
 }
@@ -129,7 +134,7 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
 	func didFailToLoadData(with error: Error) {
 		viewController?.showNetworkError(message: error.localizedDescription)
 	}
-	
+
 	func didReceiveNextQuestion(question: QuizQuestion?) {
 		guard let question else { return }
 		currentQuestion = question

@@ -36,7 +36,6 @@ class QuestionFactory: QuestionFactoryProtocol {
 			guard let self = self else { return }
 
 			guard let movie = movies.randomElement() else {
-				//assertionFailure("question is empty")
 				return
 			}
 
