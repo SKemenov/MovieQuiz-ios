@@ -51,6 +51,7 @@ final class MovieQuizViewController: UIViewController {
 		imageView.layer.masksToBounds = true
 		imageView.layer.borderWidth = 0
 		imageView.layer.cornerRadius = 20
+		imageView.backgroundColor = .clear
 
 		presenter.reloadGame()
 	}
