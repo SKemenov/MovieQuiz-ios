@@ -1,22 +1,13 @@
 //
-//  QuestionFactory.swift
+//  QuestionFactoryForKinopoisk.swift
 //  MovieQuiz
 //
-//  Created by Sergey Kemenov on 14.05.2023.
+//  Created by Sergey Kemenov on 02.07.2023.
 //
 
 import Foundation
 
-//  MARK: - Protocol
-
-protocol QuestionFactoryProtocol {
-	func requestNextQuestion()
-	func loadData()
-}
-
-//  MARK: - Class
-
-class QuestionFactory: QuestionFactoryProtocol {
+class QuestionFactoryForKinopoisk: QuestionFactoryProtocol {
 	// MARK: - Constants & Variables
 
 	private weak var delegate: QuestionFactoryDelegate?
@@ -97,4 +88,3 @@ class QuestionFactory: QuestionFactoryProtocol {
 		}
 	}
 }
-

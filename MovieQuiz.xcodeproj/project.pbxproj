@@ -36,6 +36,9 @@
 		E9C80B962A141ADF0051D489 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C80B952A141ADF0051D489 /* QuestionFactoryDelegate.swift */; };
 		E9C8CE182A44D07E0037F8BC /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */; };
 		E9CB2CD72A45279B00BA32B9 /* MovieQuizPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CB2CD62A45279B00BA32B9 /* MovieQuizPresenterTests.swift */; };
+		E9E6B73F2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E6B73E2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift */; };
+		E9E6B7412A51DB0A0099C23F /* NetworkClientForKinopoisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E6B7402A51DB0A0099C23F /* NetworkClientForKinopoisk.swift */; };
+		E9E6B7432A51DB340099C23F /* QuestionFactoryForKinopoisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E6B7422A51DB340099C23F /* QuestionFactoryForKinopoisk.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +100,9 @@
 		E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
 		E9CB2CD42A45279B00BA32B9 /* MovieQuizPresenterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieQuizPresenterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9CB2CD62A45279B00BA32B9 /* MovieQuizPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenterTests.swift; sourceTree = "<group>"; };
+		E9E6B73E2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieLoaderFromKinopiosk.swift; sourceTree = "<group>"; };
+		E9E6B7402A51DB0A0099C23F /* NetworkClientForKinopoisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientForKinopoisk.swift; sourceTree = "<group>"; };
+		E9E6B7422A51DB340099C23F /* QuestionFactoryForKinopoisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryForKinopoisk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +221,9 @@
 				E92373002A2231FD0027564D /* StatisticService.swift */,
 				E92DC90F2A2F10B5009743CB /* NetworkClient.swift */,
 				E91725E82A31A5A900669EF7 /* MoviesLoader.swift */,
+				E9E6B73E2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift */,
+				E9E6B7402A51DB0A0099C23F /* NetworkClientForKinopoisk.swift */,
+				E9E6B7422A51DB340099C23F /* QuestionFactoryForKinopoisk.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -436,8 +445,11 @@
 				E950816C2A15F321007F4C67 /* AlertPresenter.swift in Sources */,
 				E950816A2A15F2CB007F4C67 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
+				E9E6B7412A51DB0A0099C23F /* NetworkClientForKinopoisk.swift in Sources */,
+				E9E6B7432A51DB340099C23F /* QuestionFactoryForKinopoisk.swift in Sources */,
 				E92DC9102A2F10B5009743CB /* NetworkClient.swift in Sources */,
 				E91725E92A31A5A900669EF7 /* MoviesLoader.swift in Sources */,
+				E9E6B73F2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift in Sources */,
 				E9C80B962A141ADF0051D489 /* QuestionFactoryDelegate.swift in Sources */,
 				E93890642A112E7100952563 /* QuizResultsViewModel.swift in Sources */,
 				E93890622A112E0B00952563 /* QuizStepViewModel.swift in Sources */,

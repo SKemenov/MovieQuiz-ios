@@ -46,36 +46,3 @@ struct NetworkClient: NetworkRouting {
     }
 }
 
-struct NetworkClientForKinopoisk: NetworkRouting {
-
-	private enum NetworkError: Error {
-		case codeError
-	}
-
-	func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
-		var request = URLRequest(url: url)
-		request.setValue("application/json", forHTTPHeaderField: "accept")
-		request.setValue("3FWVXVZ-KJGMHZS-P95YZS7-E2DKHQJ", forHTTPHeaderField: "X-API-KEY")
-
-		let task = URLSession.shared.dataTask(with: request) { data, response, error in
-			// error return check
-			if let error = error {
-				handler(.failure(error))
-				return
-			}
-
-			// unsuccess response code return check
-			if let response = response as? HTTPURLResponse,
-			   response.statusCode < 200 || response.statusCode >= 300 {
-				handler(.failure(NetworkError.codeError))
-				return
-			}
-
-			//happy path
-			guard let data = data else { return }
-			handler(.success(data))
-		}
-
-		task.resume()
-	}
-}
