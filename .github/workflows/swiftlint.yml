@@ -1,3 +1,5 @@
+# GitHub Action workflow file
+
 name: SwiftLint (with warnings)
 
 on:
@@ -5,12 +7,33 @@ on:
   workflow_dispatch:
   
 jobs:
-  SwiftLint:
+  check-with-warnings:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
+      - name: GitHub Checkout
       - uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --no-cahce
+#          args: --no-cahce --config swiftlint.yml
+ 
+  check-strict:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub Checkout
+      - uses: actions/checkout@v4
+      - name: GitHub Action for SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --strict --no-cahce --config swiftlint.yml
+ 
+  try-build:
+    uses: ./.github/workflows/fastlane-build-only.yml
+# YAML file without @version due to using the local repository file
+
 #        with:
 #          args: --config swiftlint.yml
 #
