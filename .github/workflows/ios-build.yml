@@ -23,6 +23,7 @@ jobs:
 # YAML file without @version due to using the local repository file
 
   build:
+    needs: swiftLint
 #    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/fastlane-build-only.yml
 #    secrets: inherit
