@@ -20,8 +20,8 @@ jobs:
       - name: GitHub Action for SwiftLint --no-cache --config swiftlintt.yml
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
-#          args: --no-cache
-          args: --no-cache --config swiftlintt.yml
+          args: --no-cache
+#          args: --no-cache --config swiftlintt.yml
  
   check-strict:
     if: github.event_name == 'pull_request'
