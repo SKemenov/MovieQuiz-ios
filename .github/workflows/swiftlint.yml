@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "::notice::GitHub Action for SwiftLint --no-cache --config swiftlint.yml"
+      - run: echo "::notice::${{ github.actor }} ran GitHub Action for swiftLint --no-cache --config swiftlint.yml (${{ job.status }})."
       - uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --no-cache
@@ -27,10 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "::notice::GitHub Action for SwiftLint --strict --no-cache --config swiftlint.yml"
+      - run: echo "::notice::${{ github.actor }} ran GitHub Action for swiftLint --strict --no-cache --config swiftlint.yml (${{ job.status }})."
       - uses: norio-nomura/action-swiftlint@3.2.1
         with:
-          args: --no-cache
+          args: --strict --no-cache
 #          args: --strict --no-cache --config swiftlint.yml
  
 #      - run: echo "::notice::GitHub Action for SwiftLint (Only files changed in the PR)"
