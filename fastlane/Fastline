@@ -2,9 +2,10 @@ platform :ios do
     desc 'Try to build project'
     lane :try_build do
       scan(
-        clean true
-        skip_build true
-        build_for_testing true 
+        clean: true,
+        devices: ["iPhone 12", "iPhone 14 Pro", "iPhone 15", "iPhone 15 Pro"],
+        skip_build: true,
+        build_for_testing: true 
       )
     end
 end
