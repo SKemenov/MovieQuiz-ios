@@ -1,6 +1,6 @@
 # GitHub Action workflow file
 
-name: FastLane scan
+name: FastLane Try Build
 
 on:
   workflow_call:
