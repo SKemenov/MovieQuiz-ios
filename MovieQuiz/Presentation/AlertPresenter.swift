@@ -7,14 +7,14 @@
 
 import UIKit
 
-//  MARK: - Protocol
+// MARK: - Protocol
 
 protocol AlertPresenterProtocol: AnyObject {
 	func show(for model: AlertModel)
 }
 
 final class AlertPresenter {
-    //  MARK: - Properties
+    // MARK: - Properties
     
     private weak var viewController: UIViewController?
     
