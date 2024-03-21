@@ -1,6 +1,6 @@
-clean: true
-devices: ["iPhone 12", "iPhone 14 Pro", "iPhone 15", "iPhone 15 Pro"]
-skip_build: true
-build_for_testing: true 
-skip_detect_devices: true
-skip_slack: true
+clean(true)
+devices(["iPhone 12", "iPhone 14 Pro", "iPhone 15", "iPhone 15 Pro"])
+skip_build(true)
+build_for_testing(true) 
+skip_detect_devices(true)
+skip_slack(true)
