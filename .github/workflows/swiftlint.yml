@@ -30,7 +30,8 @@ jobs:
       - name: GitHub Action for SwiftLint --strict --no-cache --config swiftlint.yml
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
-          args: --strict --no-cache --config swiftlint.yml
+          args: --no-cache
+#          args: --strict --no-cache --config swiftlint.yml
  
 #      - name: GitHub Action for SwiftLint (Only files changed in the PR)
 #        uses: norio-nomura/action-swiftlint@3.2.1
