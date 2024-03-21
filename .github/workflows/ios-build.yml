@@ -21,7 +21,7 @@ concurrency:
   
 jobs:
   swiftLint:
-    if: github.event_name != 'pull_request'
+#    if: github.event_name != 'pull_request'
     uses: ./.github/workflows/swiftlint.yml
 # YAML file without @version due to using the local repository file
 #
