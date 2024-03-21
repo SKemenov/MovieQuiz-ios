@@ -1,0 +1,29 @@
+name: iOS Build
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+      - sprint*
+    paths-ignore:
+      - '.github/**'
+  pull_request:
+    branches:
+      - develop
+    paths-ignore:
+      - '.github/**'
+  workflow_dispatch:
+
+jobs:
+  check-warnings:
+    if: github.event_name != 'pull_request'
+    uses: .github/workflows/swiftlint.yml@main
+
+  check-strict:
+    if: github.event_name == 'pull_request'
+    uses: .github/workflows/swiftlint-strict.yml@main
+
+  build:
+    uses: .github/workflows/fastline-build-only.yml@main
+#    secrets: inherit
