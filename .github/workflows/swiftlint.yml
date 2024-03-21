@@ -16,9 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "::notice::Running swiftLint --no-cache"
-      - name: GitHub Action for SwiftLint --no-cache --config swiftlint.yml
-        uses: norio-nomura/action-swiftlint@3.2.1
+      - run: echo "::notice::GitHub Action for SwiftLint --no-cache --config swiftlint.yml"
+      - uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --no-cache
 #          args: --no-cache --config swiftlint.yml
@@ -28,19 +27,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "::notice::Running swiftLint --strict --no-cache"
-      - name: GitHub Action for SwiftLint --strict --no-cache --config swiftlint.yml
-        uses: norio-nomura/action-swiftlint@3.2.1
+      - run: echo "::notice::GitHub Action for SwiftLint --strict --no-cache --config swiftlint.yml"
+      - uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --no-cache
 #          args: --strict --no-cache --config swiftlint.yml
  
-#      - name: GitHub Action for SwiftLint (Only files changed in the PR)
+#      - run: echo "::notice::GitHub Action for SwiftLint (Only files changed in the PR)"
 #        uses: norio-nomura/action-swiftlint@3.2.1
 #        env:
 #          DIFF_BASE: ${{ github.base_ref }}
 #
-#      - name: GitHub Action for SwiftLint (Different working directory)
+#      - run: echo "::notice::GitHub Action for SwiftLint (Different working directory)"
 #        uses: norio-nomura/action-swiftlint@3.2.1
 #        env:
 #          WORKING_DIRECTORY: Source
