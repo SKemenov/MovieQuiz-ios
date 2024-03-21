@@ -26,5 +26,5 @@ jobs:
     uses: ./.github/workflows/swiftlint-strict.yml
 
   build:
-    uses: ./.github/workflows/fastline-build-only.yml
+    uses: ./.github/workflows/fastlane-build-only.yml
 #    secrets: inherit
