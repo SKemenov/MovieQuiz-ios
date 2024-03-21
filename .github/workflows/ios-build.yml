@@ -15,15 +15,21 @@ on:
       - '.github/**'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
-  check-warnings:
-    if: github.event_name != 'pull_request'
-    uses: ./.github/workflows/swiftlint.yml
+  lint:
+    steps:
+    - name: check-warnings
+      if: github.event_name != 'pull_request'
+      uses: ./.github/workflows/swiftlint.yml
 # YAML file without @version due to using the local repository file
 
-  check-strict:
-    if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/swiftlint-strict.yml
+    - name: check-strict
+      if: github.event_name == 'pull_request'
+      uses: ./.github/workflows/swiftlint-strict.yml
 
   build:
     uses: ./.github/workflows/fastlane-build-only.yml
