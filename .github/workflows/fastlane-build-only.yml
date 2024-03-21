@@ -1,15 +1,8 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
-
-name: fastlane scan (build only)
+name: FastLane scan
 
 on:
   workflow_call:
   workflow_dispatch:
-#  push:
-#    branches: [ "sprint*" ]
-#  pull_request:
-#    branches: [ "sprint_07_kinopoisk" ]
 
 jobs:
   build:
@@ -17,6 +10,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Build
+    - name: Build only
       run: fastlane scan
 
