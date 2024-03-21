@@ -4,16 +4,15 @@
 name: fastlane scan (build only)
 
 on:
-  push:
-    branches: [ "sprint*" ]
-  pull_request:
-    branches: [ "sprint_07_kinopoisk" ]
+  workflow_call:
+#  push:
+#    branches: [ "sprint*" ]
+#  pull_request:
+#    branches: [ "sprint_07_kinopoisk" ]
 
 jobs:
   build:
-
     runs-on: macos-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
