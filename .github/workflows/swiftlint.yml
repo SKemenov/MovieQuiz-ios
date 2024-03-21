@@ -11,24 +11,22 @@ concurrency:
   cancel-in-progress: true
   
 jobs:
-  check-with-warnings:
+  check-push:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: GitHub Action for SwiftLint --no-cache --config swiftlintt.yml
+      - uses: actions/checkout@v4
+      - name: GitHub Action for SwiftLint --no-cache --config swiftlint.yml
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --no-cache
-#          args: --no-cache --config swiftlintt.yml
+#          args: --no-cache --config swiftlint.yml
  
-  check-strict:
+  check-pr:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint --strict --no-cache --config swiftlint.yml
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
