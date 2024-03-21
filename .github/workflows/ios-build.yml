@@ -20,15 +20,15 @@ concurrency:
   cancel-in-progress: true
   
 jobs:
-  check-lint-warnings:
+  swiftLint:
     if: github.event_name != 'pull_request'
     uses: ./.github/workflows/swiftlint.yml
 # YAML file without @version due to using the local repository file
-
-    check=lint-strict:
-      if: github.event_name == 'pull_request'
-      uses: ./.github/workflows/swiftlint-strict.yml
-
+#
+#    check=lint-strict:
+#      if: github.event_name == 'pull_request'
+#      uses: ./.github/workflows/swiftlint-strict.yml
+#
 #  build:
 #    uses: ./.github/workflows/fastlane-build-only.yml
 #    secrets: inherit
