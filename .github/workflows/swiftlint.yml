@@ -28,12 +28,12 @@ jobs:
  
   check-pr:
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Lint
         run: |
-          swiftlint lint --no-cache
+          set -o pipefail
           swiftlint lint --no-cache | sed -E 's/^(.*):([0-9]+):([0-9]+): (warning|error|[^:]+): (.*)/::\4 file=\1,line=\2,col=\3::\5/'
       - run: echo "::notice::${{ github.actor }} ran GitHub Action for swiftLint --strict --no-cache --config swiftlint.yml (${{ job.status }})."
 #        run: |
