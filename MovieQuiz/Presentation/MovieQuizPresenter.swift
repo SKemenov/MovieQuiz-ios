@@ -143,9 +143,9 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
 		// use async to show updated UI
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
-			viewController?.hideLoadingIndicator()
-			viewController?.enableButtons(true)
-			viewController?.show(quiz: viewModel)
+            self.viewController?.hideLoadingIndicator()
+            self.viewController?.enableButtons(true)
+            self.viewController?.show(quiz: viewModel)
 		}
 	}
 }
