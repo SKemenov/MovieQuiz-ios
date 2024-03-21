@@ -5,9 +5,9 @@ name: iOS Pull Request (dev)
 on:
   pull_request:
     branches:
-#      - 'features/**'
       - sprint*
-#      - develop
+      - 'features/**'
+      - develop
     paths-ignore:
       - '.github/**'
   workflow_dispatch:
