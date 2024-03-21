@@ -8,13 +8,13 @@ on:
       - develop
       - main
       - 'features/**'
-      - 'sprint*'
+      - sprint*
     paths-ignore:
       - '.github/**'
   pull_request:
     branches:
 #      - 'features/**'
-      - 'sprint*'
+      - sprint*
 #      - develop
     paths-ignore:
       - '.github/**'
