@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-for-pr:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
