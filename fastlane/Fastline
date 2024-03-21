@@ -1,0 +1,10 @@
+platform :ios do
+    desc 'Try to build project'
+    lane :try_build do
+      scan(
+        clean true
+        skip_build true
+        build_for_testing true 
+      )
+    end
+end
