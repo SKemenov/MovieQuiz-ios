@@ -14,8 +14,8 @@ jobs:
   check-with-warnings:
     runs-on: ubuntu-latest
     steps:
-      - name: GitHub Checkout
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint
         if: github.event_name != 'pull_request'
         uses: norio-nomura/action-swiftlint@3.2.1
@@ -26,8 +26,8 @@ jobs:
   check-strict:
     runs-on: ubuntu-latest
     steps:
-      - name: GitHub Checkout
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint
         if: github.event_name == 'pull_request'
         uses: norio-nomura/action-swiftlint@3.2.1
