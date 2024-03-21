@@ -15,9 +15,9 @@ protocol AlertPresenterProtocol: AnyObject {
 
 final class AlertPresenter {
     // MARK: - Properties
-    
+
     private weak var viewController: UIViewController?
-    
+
     init(viewController: UIViewController?) {
         self.viewController = viewController
     }
@@ -25,9 +25,9 @@ final class AlertPresenter {
 
 extension AlertPresenter: AlertPresenterProtocol {
     // MARK: - Methods
-    
+
     func show(for model: AlertModel) {
-        
+
         // init the alert
         let alert = UIAlertController(
             title: model.title,
@@ -36,14 +36,14 @@ extension AlertPresenter: AlertPresenterProtocol {
 
 		// set label for UI tests
 		alert.view.accessibilityIdentifier = "Alert"
-        
+
         // init the button
         let action = UIAlertAction(
             title: model.buttonText,
             style: .default) { _ in
                 model.completion()
             }
-        
+
         alert.addAction(action)
         viewController?.present(alert, animated: true)
     }
