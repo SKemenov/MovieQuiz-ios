@@ -1,3 +1,5 @@
+# GitHub Action workflow file
+
 name: FastLane scan
 
 on:
@@ -8,8 +10,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     - name: Build only
       run: fastlane scan
 
