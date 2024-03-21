@@ -11,5 +11,5 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - run: echo "::notice::GitHub Action fastlane scan"
+    - run: echo "::notice::GitHub Action for `fastlane scan`"
     - run: fastlane scan
