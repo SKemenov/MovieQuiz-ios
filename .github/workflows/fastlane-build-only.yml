@@ -5,6 +5,7 @@ name: fastlane scan (build only)
 
 on:
   workflow_call:
+  workflow_dispatch:
 #  push:
 #    branches: [ "sprint*" ]
 #  pull_request:
