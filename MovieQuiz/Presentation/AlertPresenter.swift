@@ -26,7 +26,7 @@ final class AlertPresenter {
 extension AlertPresenter: AlertPresenterProtocol {
     // MARK: - Methods
     
-    func show(for model: AlertModel)  {
+    func show(for model: AlertModel) {
         
         // init the alert
         let alert = UIAlertController(
