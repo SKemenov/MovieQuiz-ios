@@ -4,10 +4,11 @@ name: iOS Pull Request (dev)
 
 on:
   pull_request:
-    branches:
-      - sprint*
-      - 'features/**'
-      - develop
+    types:
+    - opened
+    - reopened
+    - edited
+    - synchronize
     paths-ignore:
       - '.github/**'
   workflow_dispatch:
@@ -21,3 +22,14 @@ jobs:
     needs: SwiftLint
     uses: ./.github/workflows/fastlane-build-only.yml
 #    secrets: inherit
+
+
+#on:
+#  pull_request:
+#    branches:
+#      - sprint*
+#      - 'features/**'
+#      - develop
+#    paths-ignore:
+#      - '.github/**'
+#  workflow_dispatch:
