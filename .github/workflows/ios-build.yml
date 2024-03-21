@@ -8,14 +8,14 @@ on:
       - develop
       - main
       - 'features/**'
-      - 'sprint**'
+      - 'sprint*'
     paths-ignore:
       - '.github/**'
   pull_request:
     branches:
-      - 'features/**'
-      - 'sprint**'
-      - develop
+#      - 'features/**'
+      - 'sprint*'
+#      - develop
     paths-ignore:
       - '.github/**'
   workflow_dispatch:
@@ -26,7 +26,7 @@ jobs:
 # YAML file without @version due to using the local repository file
 
   Fastlane:
-    needs: swiftLint
+    needs: SwiftLint
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/fastlane-build-only.yml
 #    secrets: inherit
