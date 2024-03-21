@@ -21,7 +21,6 @@ final class AlertPresenter {
     init(viewController: UIViewController?) {
         self.viewController = viewController
     }
-    
 }
 
 extension AlertPresenter: AlertPresenterProtocol {
