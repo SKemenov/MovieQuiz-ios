@@ -18,12 +18,12 @@ on:
 jobs:
   check-warnings:
     if: github.event_name != 'pull_request'
-    uses: .github/workflows/swiftlint.yml@main
+    uses: ./.github/workflows/swiftlint.yml@main
 
   check-strict:
     if: github.event_name == 'pull_request'
-    uses: .github/workflows/swiftlint-strict.yml@main
+    uses: ./.github/workflows/swiftlint-strict.yml@main
 
   build:
-    uses: .github/workflows/fastline-build-only.yml@main
+    uses: ./.github/workflows/fastline-build-only.yml@main
 #    secrets: inherit
