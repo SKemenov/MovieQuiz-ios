@@ -1,6 +1,6 @@
 # GitHub Action workflow file
 
-name: SwiftLint (with warnings)
+name: SwiftLint
 
 on:
   workflow_call:
@@ -17,11 +17,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: GitHub Action for SwiftLint --no-cache
+      - name: GitHub Action for SwiftLint --no-cache --config swiftlint.yml
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
-          args: --no-cache
-#          args: --no-cache --config swiftlint.yml
+#          args: --no-cache
+          args: --no-cache --config swiftlint.yml
  
   check-strict:
     if: github.event_name == 'pull_request'
@@ -34,14 +34,6 @@ jobs:
         with:
           args: --strict --no-cache --config swiftlint.yml
  
-#        with:
-#          args: --config swiftlint.yml
-#
-#      - name: GitHub Action for SwiftLint with --strict
-#        uses: norio-nomura/action-swiftlint@3.2.1
-#        with:
-#          args: --strict
-#
 #      - name: GitHub Action for SwiftLint (Only files changed in the PR)
 #        uses: norio-nomura/action-swiftlint@3.2.1
 #        env:
