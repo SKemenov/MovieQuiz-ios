@@ -1,6 +1,6 @@
 # GitHub Action workflow file
 
-name: iOS Build
+name: iOS Push
 
 on:
   push:
