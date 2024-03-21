@@ -35,7 +35,7 @@ class QuestionFactory: QuestionFactoryProtocol {
 		DispatchQueue.global().async { [weak self] in
 			guard let self = self else { return }
 
-			guard let movie = movies.randomElement() else {
+            guard let movie = self.movies.randomElement() else {
 				return
 			}
 
@@ -49,7 +49,7 @@ class QuestionFactory: QuestionFactoryProtocol {
 				}
 			}
 
-			let question = makeQuestionWith(rating: movie.rating, imageData: imageData)
+            let question = self.makeQuestionWith(rating: movie.rating, imageData: imageData)
 
 			DispatchQueue.main.async { [weak self] in
 				guard let self else { return }
