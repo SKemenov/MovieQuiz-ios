@@ -1,16 +1,8 @@
 # GitHub Action workflow file
 
-name: iOS Build
+name: iOS Pull Request (dev)
 
 on:
-  push:
-    branches:
-      - develop
-      - main
-      - 'features/**'
-      - sprint*
-    paths-ignore:
-      - '.github/**'
   pull_request:
     branches:
 #      - 'features/**'
@@ -27,6 +19,5 @@ jobs:
 
   Fastlane:
     needs: SwiftLint
-    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/fastlane-build-only.yml
 #    secrets: inherit
