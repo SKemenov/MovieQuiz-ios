@@ -11,11 +11,5 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build only
-      run: |
-        echo "::debug::Set the Octocat variable"
-        echo "::notice file=swiftlint.yml,line=1,col=5,endColumn=7::Missing semicolon"
-        fastlane scan
-        echo "::warning file=swiftlint.yml,line=1,col=5,endColumn=7,title=Attention!::Missing semicolon"
-        echo "::error file=swiftlint.yml,line=1,col=5,endColumn=7,title=Error message::Missing semicolon"
-
+    - run: echo "::notice::GitHub Action fastlane scan"
+    - run: fastlane scan
