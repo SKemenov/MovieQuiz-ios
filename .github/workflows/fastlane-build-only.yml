@@ -11,15 +11,5 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - run: |
-        echo "::notice::GitHub Action for Fastlane scan"
-        echo "${{ github.actor }} is testing out GitHub Actions 🚀"
-        echo “🎉 The job was automatically triggered by a ${{ github.event_name }} event.”
-        echo “🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!”
-        echo “🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.”
-        echo “💡 The ${{ github.repository }} repository has been cloned to the runner.”
-        echo “🖥️ The workflow is now ready to test your code on the runner.”
-    - name: Run fastlane
-      run: fastlane scan
-    - name: Status message
-      run: echo “🍏 This job’s status is ${{ job.status }}.”
+    - run: fastlane scan
+    - run: echo "::notice::${{ github.actor }} ran GitHub Action for Fastlane scan (${{ job.status }}).”
