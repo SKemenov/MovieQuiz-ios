@@ -5,27 +5,31 @@ name: SwiftLint (with warnings)
 on:
   workflow_call:
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
   
 jobs:
   check-with-warnings:
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: GitHub Checkout
       - uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint
+        if: github.event_name != 'pull_request'
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --no-cahce
 #          args: --no-cahce --config swiftlint.yml
  
   check-strict:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: GitHub Checkout
       - uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint
+        if: github.event_name == 'pull_request'
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --strict --no-cahce --config swiftlint.yml
