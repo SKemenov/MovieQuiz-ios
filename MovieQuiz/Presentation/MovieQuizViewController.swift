@@ -12,7 +12,7 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
 }
 
 final class MovieQuizViewController: UIViewController {
-	//     MARK: - Outlets
+	// MARK: - Outlets
 
 	@IBOutlet private weak var imageView: UIImageView!
 	@IBOutlet private weak var textLabel: UILabel!
@@ -21,7 +21,7 @@ final class MovieQuizViewController: UIViewController {
 	@IBOutlet private weak var noButton: UIButton!
 	@IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
 
-	//  MARK: - Properties
+	// MARK: - Properties
 
 	private var alertPresenter: AlertPresenterProtocol?
 	private var presenter: MovieQuizPresenter!
