@@ -7,14 +7,14 @@
 
 import Foundation
 
-//  MARK: - Protocol
+// MARK: - Protocol
 
 protocol QuestionFactoryProtocol {
 	func requestNextQuestion()
 	func loadData()
 }
 
-//  MARK: - Class
+// MARK: - Class
 
 class QuestionFactory: QuestionFactoryProtocol {
 	// MARK: - Constants & Variables
@@ -24,6 +24,7 @@ class QuestionFactory: QuestionFactoryProtocol {
 	private var movies: [MostPopularMovie] = []
 
 	// MARK: - init
+
 	init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoading) {
 		self.delegate = delegate
 		self.moviesLoader = moviesLoader
@@ -97,4 +98,3 @@ class QuestionFactory: QuestionFactoryProtocol {
 		}
 	}
 }
-

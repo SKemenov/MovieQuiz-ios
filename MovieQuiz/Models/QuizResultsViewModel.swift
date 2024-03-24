@@ -6,7 +6,9 @@
 //
 
 import Foundation
+
 // MARK: - Structs
+
 struct QuizResultsViewModel {
     let title: String
     let text: String

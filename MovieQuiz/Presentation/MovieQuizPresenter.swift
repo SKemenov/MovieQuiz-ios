@@ -123,7 +123,9 @@ final class MovieQuizPresenter {
 		let bestGameLine = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
 		let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
 		let averageAccuracyLine = "Средняя точность: \(accuracy)%"
-		let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
+		let resultMessage = [
+            currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine
+        ].joined(separator: "\n")
 		return resultMessage
 	}
 }
