@@ -36,6 +36,9 @@
 		E9C80B962A141ADF0051D489 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C80B952A141ADF0051D489 /* QuestionFactoryDelegate.swift */; };
 		E9C8CE182A44D07E0037F8BC /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */; };
 		E9CB2CD72A45279B00BA32B9 /* MovieQuizPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CB2CD62A45279B00BA32B9 /* MovieQuizPresenterTests.swift */; };
+		E9E6B73F2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E6B73E2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift */; };
+		E9E6B7412A51DB0A0099C23F /* NetworkClientForKinopoisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E6B7402A51DB0A0099C23F /* NetworkClientForKinopoisk.swift */; };
+		E9E6B7432A51DB340099C23F /* QuestionFactoryForKinopoisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E6B7422A51DB340099C23F /* QuestionFactoryForKinopoisk.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +100,9 @@
 		E9C8CE172A44D07E0037F8BC /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
 		E9CB2CD42A45279B00BA32B9 /* MovieQuizPresenterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieQuizPresenterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9CB2CD62A45279B00BA32B9 /* MovieQuizPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenterTests.swift; sourceTree = "<group>"; };
+		E9E6B73E2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieLoaderFromKinopiosk.swift; sourceTree = "<group>"; };
+		E9E6B7402A51DB0A0099C23F /* NetworkClientForKinopoisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientForKinopoisk.swift; sourceTree = "<group>"; };
+		E9E6B7422A51DB340099C23F /* QuestionFactoryForKinopoisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryForKinopoisk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +221,9 @@
 				E92373002A2231FD0027564D /* StatisticService.swift */,
 				E92DC90F2A2F10B5009743CB /* NetworkClient.swift */,
 				E91725E82A31A5A900669EF7 /* MoviesLoader.swift */,
+				E9E6B73E2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift */,
+				E9E6B7402A51DB0A0099C23F /* NetworkClientForKinopoisk.swift */,
+				E9E6B7422A51DB340099C23F /* QuestionFactoryForKinopoisk.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -277,6 +286,7 @@
 				AD1ABAAA2831907B00B3E448 /* Sources */,
 				AD1ABAAB2831907B00B3E448 /* Frameworks */,
 				AD1ABAAC2831907B00B3E448 /* Resources */,
+				E97008C02BAB4FEB005AAFA9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -426,6 +436,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E97008C02BAB4FEB005AAFA9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AD1ABAAA2831907B00B3E448 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -436,8 +467,11 @@
 				E950816C2A15F321007F4C67 /* AlertPresenter.swift in Sources */,
 				E950816A2A15F2CB007F4C67 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
+				E9E6B7412A51DB0A0099C23F /* NetworkClientForKinopoisk.swift in Sources */,
+				E9E6B7432A51DB340099C23F /* QuestionFactoryForKinopoisk.swift in Sources */,
 				E92DC9102A2F10B5009743CB /* NetworkClient.swift in Sources */,
 				E91725E92A31A5A900669EF7 /* MoviesLoader.swift in Sources */,
+				E9E6B73F2A51DAD20099C23F /* MovieLoaderFromKinopiosk.swift in Sources */,
 				E9C80B962A141ADF0051D489 /* QuestionFactoryDelegate.swift in Sources */,
 				E93890642A112E7100952563 /* QuizResultsViewModel.swift in Sources */,
 				E93890622A112E0B00952563 /* QuizStepViewModel.swift in Sources */,
@@ -637,6 +671,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3LKWW87KA9;
@@ -656,8 +691,9 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_DOCC_FLAGS = "-symbol-graph-minimum-access-level private";
-				PRODUCT_BUNDLE_IDENTIFIER = ru.skemenov.practicum.MovieQuiz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skemenov.MovieQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -675,6 +711,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3LKWW87KA9;
@@ -694,8 +731,9 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_DOCC_FLAGS = "-symbol-graph-minimum-access-level private";
-				PRODUCT_BUNDLE_IDENTIFIER = ru.skemenov.practicum.MovieQuiz;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skemenov.MovieQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

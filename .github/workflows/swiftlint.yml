@@ -1,0 +1,44 @@
+# GitHub Action workflow file
+
+name: SwiftLint
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  check-push:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --no-cache
+#          args: --no-cache --config swiftlint.yml
+      - run: echo "::notice::${{ github.actor }} ran GitHub Action for swiftLint --no-cache --config swiftlint.yml (${{ job.status }})."
+ 
+  check-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --no-cache
+#          args: --strict --no-cache --config swiftlint.yml
+      - run: echo "::notice::${{ github.actor }} ran GitHub Action for swiftLint --no-cache (${{ job.status }})."
+ 
+#      - run: echo "::notice::GitHub Action for SwiftLint (Only files changed in the PR)"
+#        uses: norio-nomura/action-swiftlint@3.2.1
+#        env:
+#          DIFF_BASE: ${{ github.base_ref }}
+#
+#      - run: echo "::notice::GitHub Action for SwiftLint (Different working directory)"
+#        uses: norio-nomura/action-swiftlint@3.2.1
+#        env:
+#          WORKING_DIRECTORY: Source

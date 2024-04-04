@@ -7,28 +7,27 @@
 
 import UIKit
 
-//  MARK: - Protocol
+// MARK: - Protocol
 
 protocol AlertPresenterProtocol: AnyObject {
 	func show(for model: AlertModel)
 }
 
 final class AlertPresenter {
-    //  MARK: - Properties
-    
+    // MARK: - Properties
+
     private weak var viewController: UIViewController?
-    
+
     init(viewController: UIViewController?) {
         self.viewController = viewController
     }
-    
 }
 
 extension AlertPresenter: AlertPresenterProtocol {
     // MARK: - Methods
-    
-    func show(for model: AlertModel)  {
-        
+
+    func show(for model: AlertModel) {
+
         // init the alert
         let alert = UIAlertController(
             title: model.title,
@@ -37,14 +36,14 @@ extension AlertPresenter: AlertPresenterProtocol {
 
 		// set label for UI tests
 		alert.view.accessibilityIdentifier = "Alert"
-        
+
         // init the button
         let action = UIAlertAction(
             title: model.buttonText,
             style: .default) { _ in
                 model.completion()
             }
-        
+
         alert.addAction(action)
         viewController?.present(alert, animated: true)
     }

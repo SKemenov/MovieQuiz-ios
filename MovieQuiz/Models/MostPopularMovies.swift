@@ -22,7 +22,9 @@ struct MostPopularMovie: Codable {
         case rating = "imDbRating"
         case imageURL = "image"
     }
-    
+
+    /// test
+
     var resizedImageURL: URL {
         let urlString = imageURL.absoluteString
         //  обрезаем лишнюю часть и добавляем модификатор желаемого качества

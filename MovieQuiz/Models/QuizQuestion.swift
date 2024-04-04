@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Structs
+
 struct QuizQuestion {
     let image: Data
     let text: String

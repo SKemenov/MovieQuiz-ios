@@ -4,3 +4,7 @@
 xcuserdata/
 DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+
+# fastlane
+Fastlane/report.xml
+Fastlane/test_output

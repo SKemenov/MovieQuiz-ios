@@ -1,22 +1,13 @@
 //
-//  QuestionFactory.swift
+//  QuestionFactoryForKinopoisk.swift
 //  MovieQuiz
 //
-//  Created by Sergey Kemenov on 14.05.2023.
+//  Created by Sergey Kemenov on 02.07.2023.
 //
 
 import Foundation
 
-// MARK: - Protocol
-
-protocol QuestionFactoryProtocol {
-	func requestNextQuestion()
-	func loadData()
-}
-
-// MARK: - Class
-
-class QuestionFactory: QuestionFactoryProtocol {
+class QuestionFactoryForKinopoisk: QuestionFactoryProtocol {
 	// MARK: - Constants & Variables
 
 	private weak var delegate: QuestionFactoryDelegate?
@@ -24,7 +15,6 @@ class QuestionFactory: QuestionFactoryProtocol {
 	private var movies: [MostPopularMovie] = []
 
 	// MARK: - init
-
 	init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoading) {
 		self.delegate = delegate
 		self.moviesLoader = moviesLoader
@@ -33,30 +23,30 @@ class QuestionFactory: QuestionFactoryProtocol {
 	// MARK: - Methods
 
 	func requestNextQuestion()  {
-		DispatchQueue.global().async { [weak self] in
-			guard let self = self else { return }
-
-            guard let movie = self.movies.randomElement() else {
-				return
-			}
-
-			var imageData = Data()
-			do {
-				imageData = try Data(contentsOf: movie.resizedImageURL)
-			}
-			catch {
-				DispatchQueue.main.async { [weak self] in
-					self?.delegate?.didFailToLoadData(with: error)
-				}
-			}
-
-            let question = self.makeQuestionWith(rating: movie.rating, imageData: imageData)
-
-			DispatchQueue.main.async { [weak self] in
-				guard let self else { return }
-				self.delegate?.didReceiveNextQuestion(question: question)
-			}
-		}
+//		DispatchQueue.global().async { [weak self] in
+//			guard let self = self else { return }
+//
+//			guard let movie = movies.randomElement() else {
+//				return
+//			}
+//
+//			var imageData = Data()
+//			do {
+//				imageData = try Data(contentsOf: movie.resizedImageURL)
+//			}
+//			catch {
+//				DispatchQueue.main.async { [weak self] in
+//					self?.delegate?.didFailToLoadData(with: error)
+//				}
+//			}
+//
+//			let question = makeQuestionWith(rating: movie.rating, imageData: imageData)
+//
+//			DispatchQueue.main.async { [weak self] in
+//				guard let self else { return }
+//				self.delegate?.didReceiveNextQuestion(question: question)
+//			}
+//		}
 	}
 
 	private func makeQuestionWith(rating: String, imageData: Data) -> QuizQuestion {

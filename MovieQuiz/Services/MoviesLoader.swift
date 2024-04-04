@@ -18,10 +18,10 @@ protocol MoviesLoading {
 struct MovieLoader: MoviesLoading {
     private let networkClient: NetworkRouting
 	// use most popular or top250 movie's IMDb API
-	private let imdbUrl = "https://imdb-api.com/en/API/"
+	private let imdbUrl = "https://tv-api.com/en/API/"
 	private let imdbApi = Bool.random() ? "MostPopularMovies/" : "Top250Movies/"
-    private let imdbToken = "k_gbe4ep0b"
-    
+	private let imdbToken = "k_zcuw1ytf" // yandex's token
+
     init(networkClient: NetworkRouting = NetworkClient()) {
         self.networkClient = networkClient
     }
@@ -42,6 +42,7 @@ struct MovieLoader: MoviesLoading {
                         handler(.success(mostPopularMovies))
                     }
                     catch {
+						print("can'r run success case correectly")
                         handler(.failure(error))
                     }
                 case .failure(let error):

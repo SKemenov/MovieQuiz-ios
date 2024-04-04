@@ -9,12 +9,12 @@ import Foundation
 import UIKit.UIImage
 
 final class MovieQuizPresenter {
-	//  MARK: - Properties
-	
+	// MARK: - Properties
+
 	private let questionsAmount: Int = 10
 	private var currentQuestionIndex: Int = 0
 	private var correctAnswers: Int = 0
-	
+
 	private var questionFactory: QuestionFactoryProtocol?
 	private var statisticService: StatisticService?
 	private var currentQuestion: QuizQuestion?
@@ -29,13 +29,13 @@ final class MovieQuizPresenter {
 	}
 
 	// MARK: - Public Methods
-	
+
 	func clickedButton(isYes: Bool) {
 		guard let currentQuestion else { return }
 		let givenAnswer = isYes
 		proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
 	}
-	
+
 	func restartGame() {
 		currentQuestionIndex = 0
 		correctAnswers = 0
@@ -48,7 +48,11 @@ final class MovieQuizPresenter {
 	}
 
 	func makeQuizResults() -> QuizResultsViewModel {
-		QuizResultsViewModel(title: "Этот раунд окончен!", text: makeResultsMessage(), buttonText: "Сыграть ещё раз")
+		QuizResultsViewModel(
+            title: "Этот раунд окончен!",
+            text: makeResultsMessage(),
+            buttonText: "Сыграть ещё раз"
+        )
 	}
 
 	// Have to be non-private for unit tests
@@ -75,13 +79,13 @@ final class MovieQuizPresenter {
 		viewController?.prepareViewForNextQuestion()
 		questionFactory?.requestNextQuestion()
 	}
-	
+
 	private func didAnswer(isCorrectAnswer: Bool) {
 		if isCorrectAnswer {
 			correctAnswers += 1
 		}
 	}
-	
+
 	private func proceedWithAnswer(isCorrect: Bool) {
 		viewController?.prepareViewAfterAnswer(isCorrectAnswer: isCorrect)
 		viewController?.enableButtons(false)
@@ -119,7 +123,9 @@ final class MovieQuizPresenter {
 		let bestGameLine = "Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))"
 		let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
 		let averageAccuracyLine = "Средняя точность: \(accuracy)%"
-		let resultMessage = [currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine].joined(separator: "\n")
+		let resultMessage = [
+            currentGameResultLine, totalPlaysCountLine, bestGameLine, averageAccuracyLine
+        ].joined(separator: "\n")
 		return resultMessage
 	}
 }
@@ -139,13 +145,13 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
 		guard let question else { return }
 		currentQuestion = question
 		let viewModel = convert(model: question)
-		
+
 		// use async to show updated UI
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
-			viewController?.hideLoadingIndicator()
-			viewController?.enableButtons(true)
-			viewController?.show(quiz: viewModel)
+            self.viewController?.hideLoadingIndicator()
+            self.viewController?.enableButtons(true)
+            self.viewController?.show(quiz: viewModel)
 		}
 	}
 }
